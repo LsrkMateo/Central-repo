@@ -10,6 +10,7 @@ function Page() {
   const linkArray = [
     "https://api.github.com/repos/LsrkMateo/next-js-mongodb",
     "https://api.github.com/repos/LsrkMateo/Hashnode-blogs",
+    "https://api.github.com/repos/LsrkMateo/database-test",
   ];
 
   const [repoData, setRepoData] = useState([]);
@@ -23,10 +24,15 @@ function Page() {
     }
   };
 
+  const handleCardClick = (url) => {
+    console.log("Clicked repository name:", url);
+    window.open(url);
+  };
+
   useEffect(() => {
     linkArray.forEach((link) => getRepo(link));
   }, []);
-  console.log(repoData);
+
   return (
     <div
       className={`min-h-screen p-8 ${darkMode ? "bg-gray-950" : "bg-gray-100"}`}
@@ -38,14 +44,17 @@ function Page() {
               key={index}
               className={`p-4 rounded shadow-lg ${
                 darkMode ? "bg-gray-800 text-white" : "bg-white"
-              }`}
+              } ${
+                darkMode ? "hover:brightness-125" : "hover:brightness-90"
+              } transition-all`}
+              onClick={() => handleCardClick(data.html_url)}
             >
               <div
                 className={`text-2xl font-bold mb-4 ${
                   darkMode ? "text-white" : "text-gray-900"
                 }`}
               >
-                Nombre: {data.name}
+                {data.name}
               </div>
               <div
                 className={`mb-2 ${
@@ -66,10 +75,9 @@ function Page() {
                   darkMode ? "text-gray-400" : "text-gray-700"
                 }`}
               >
-                Última actualización:  {format(new Date(data.pushed_at), "dd/MM/yyyy HH:mm")}
+                Última actualización:{" "}
+                {format(new Date(data.pushed_at), "dd/MM/yyyy HH:mm")}
               </div>
-
-              {/* Resto de los detalles del repositorio */}
             </div>
           ))
         ) : (
