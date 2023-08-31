@@ -1,12 +1,11 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDarkMode } from "./context";
 import { format } from "date-fns";
 
 function Page() {
-  const { darkMode, toggleDarkMode } = useDarkMode();
+  const { darkMode } = useDarkMode();
   const linkArray = [
     "https://api.github.com/repos/LsrkMateo/next-js-mongodb",
     "https://api.github.com/repos/LsrkMateo/Hashnode-blogs",
@@ -30,64 +29,45 @@ function Page() {
   };
 
   useEffect(() => {
-    linkArray.forEach((link) => getRepo(link));
+    linkArray.forEach(getRepo);
   }, []);
 
+  const isDarkMode = JSON.parse(localStorage.getItem("darkMode"));
+  const bgColorClass = isDarkMode ? "bg-gray-950" : "bg-gray-100";
+  const textColorClass = isDarkMode ? "text-white" : "text-gray-900";
+  const textMutedClass = isDarkMode ? "text-gray-400" : "text-gray-700";
+
   return (
-    <div
-      className={`min-h-screen p-8 ${darkMode ? "bg-gray-950" : "bg-gray-100"}`}
-    >
+    <div className={`min-h-screen p-8 ${bgColorClass}`}>
       <div className="grid grid-cols-2 gap-4">
         {repoData.length > 0 ? (
           repoData.map((data, index) => (
             <div
               key={index}
               className={`p-4 rounded shadow-lg ${
-                darkMode ? "bg-gray-800 text-white" : "bg-white"
-              } ${
-                darkMode ? "hover:brightness-125" : "hover:brightness-90"
+                isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+              } hover:${
+                isDarkMode ? "brightness-125" : "brightness-90"
               } transition-all`}
               onClick={() => handleCardClick(data.html_url)}
             >
-              <div
-                className={`text-2xl font-bold mb-4 ${
-                  darkMode ? "text-white" : "text-gray-900"
-                }`}
-              >
+              <div className={`text-2xl font-bold mb-4 ${textColorClass}`}>
                 {data.name}
               </div>
-              <div
-                className={`mb-2 ${
-                  darkMode ? "text-gray-400" : "text-gray-700"
-                }`}
-              >
+              <div className={`mb-2 ${textMutedClass}`}>
                 Autor: {data.owner.login}
               </div>
-              <div
-                className={`mb-2 ${
-                  darkMode ? "text-gray-400" : "text-gray-700"
-                }`}
-              >
-                Description: {!data.description ? "no tiene" : data.description}
+              <div className={`mb-2 ${textMutedClass}`}>
+                Descripcion: {!data.description ? "no tiene" : data.description}
               </div>
-              <div
-                className={`mb-2 ${
-                  darkMode ? "text-gray-400" : "text-gray-700"
-                }`}
-              >
+              <div className={`mb-2 ${textMutedClass}`}>
                 Última actualización:{" "}
                 {format(new Date(data.pushed_at), "dd/MM/yyyy HH:mm")}
               </div>
             </div>
           ))
         ) : (
-          <div
-            className={`text-center ${
-              darkMode ? "text-gray-400" : "text-gray-700"
-            }`}
-          >
-            Cargando...
-          </div>
+          <div className={`text-center ${textMutedClass}`}>Cargando...</div>
         )}
       </div>
     </div>
