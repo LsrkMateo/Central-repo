@@ -1,12 +1,11 @@
 /**
  * @type {import('next').NextConfig}
  */
-const nextConfig = {
-  output: "export",
-  trailingSlash: true,
-  distDir: 'dist',
-  // Otras configuraciones personalizadas si es necesario
+module.exports = {
+  // Configuración permitida sin características experimentales
+  reactStrictMode: true,
+  webpack: (config) => {
+    // Configuración adicional de Webpack si es necesario
+    return config;
+  },
 };
-
-module.exports = nextConfig;
-
