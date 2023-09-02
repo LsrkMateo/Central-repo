@@ -7,6 +7,7 @@ import { format } from "date-fns";
 function Page() {
   const { darkMode } = useDarkMode();
   const linkArray = [
+    "https://api.github.com/repos/getcursor/cursor",
     "https://api.github.com/repos/LsrkMateo/next-js-mongodb",
     "https://api.github.com/repos/LsrkMateo/Hashnode-blogs",
     "https://api.github.com/repos/LsrkMateo/database-test",
@@ -52,17 +53,27 @@ function Page() {
               }`}
               onClick={() => handleCardClick(data.html_url)}
             >
-              <div className={`text-2xl font-bold mb-4 ${textColorClass}`}>
-                {data.name}
+              <div className={`flex items-center ${textColorClass}`}>
+                <div className="text-2xl font-bold mb-4">{data.name}</div>
+                <div className="ml-7">
+                  <img
+                    src={data.owner.avatar_url}
+                    alt="data.owner.avatar"
+                    width={66}
+                    height={66}
+                  />
+                </div>
               </div>
+
               <div className={`mb-2 ${textMutedClass}`}>
                 Autor: {data.owner.login}
               </div>
+
               <div className={`mb-2 ${textMutedClass}`}>
                 Descripcion: {!data.description ? "no tiene" : data.description}
               </div>
               <div className={`mb-2 ${textMutedClass}`}>
-                Última actualización:{" "}
+                Última actualización:
                 {format(new Date(data.pushed_at), "dd/MM/yyyy HH:mm")}
               </div>
             </div>
