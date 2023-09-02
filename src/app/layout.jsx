@@ -51,7 +51,7 @@ function DarkModeLayout({ children }) {
                 : "bg-gray-200 text-gray-800"
             }`}
           >
-            Toggle Dark Mode
+            Alternar modo oscuro 
           </button>
           {children}
         </main>
