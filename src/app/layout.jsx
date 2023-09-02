@@ -16,24 +16,27 @@ function DarkModeLayout({ children }) {
   const { darkMode, toggleDarkMode } = useDarkMode();
 
   useEffect(() => {
-    const storedDarkMode = localStorage.getItem("darkMode");
-
-    if (storedDarkMode !== null) {
-      toggleDarkMode(storedDarkMode === "true");
+    if (typeof window !== "undefined") {
+      const storedDarkMode = window.localStorage.getItem("darkMode");
+      if (storedDarkMode !== null) {
+        toggleDarkMode(storedDarkMode === "true");
+      }
+    } else {
+      console.log("no se pudo acceder a local storage");
     }
   }, []);
 
   const toggleDarkModeFunc = () => {
     const newDarkMode = !darkMode;
     toggleDarkMode(newDarkMode);
-    localStorage.setItem("darkMode", newDarkMode);
+    window.localStorage.setItem("darkMode", newDarkMode);
   };
 
   return (
     <html lang="en">
       <body
         className={`${
-          JSON.parse(localStorage.getItem("darkMode"))
+          JSON.parse(window.localStorage.getItem("darkMode"))
             ? "bg-gray-900"
             : "bg-white"
         }`}

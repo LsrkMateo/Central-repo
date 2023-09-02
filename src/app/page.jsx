@@ -10,6 +10,8 @@ function Page() {
     "https://api.github.com/repos/LsrkMateo/next-js-mongodb",
     "https://api.github.com/repos/LsrkMateo/Hashnode-blogs",
     "https://api.github.com/repos/LsrkMateo/database-test",
+    "https://api.github.com/repos/LsrkMateo/Nextjs-ga-test",
+    "https://api.github.com/repos/LsrkMateo/Docker---apache",
   ];
 
   const [repoData, setRepoData] = useState([]);
@@ -24,7 +26,6 @@ function Page() {
   };
 
   const handleCardClick = (url) => {
-    console.log("Clicked repository name:", url);
     window.open(url);
   };
 
@@ -46,9 +47,9 @@ function Page() {
               key={index}
               className={`p-4 rounded shadow-lg ${
                 isDarkMode ? "bg-gray-800 text-white" : "bg-white"
-              } hover:${
-                isDarkMode ? "brightness-125" : "brightness-90"
-              } transition-all`}
+              } transition-all hover:${
+                isDarkMode ? "brightness-125" : "brightness-75"
+              }`}
               onClick={() => handleCardClick(data.html_url)}
             >
               <div className={`text-2xl font-bold mb-4 ${textColorClass}`}>
