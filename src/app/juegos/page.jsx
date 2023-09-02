@@ -1,12 +1,39 @@
 "use client";
+
+import { useEffect } from "react";
 import { useDarkMode } from "../context";
 
 function Juegos() {
   const { darkMode } = useDarkMode();
-  const isDarkMode = JSON.parse(localStorage.getItem("darkMode"));
+  let isDarkMode = darkMode;
+
+  if (typeof window !== "undefined") {
+    const localStorageDarkMode = JSON.parse(localStorage.getItem("darkMode"));
+    if (localStorageDarkMode !== undefined && localStorageDarkMode !== null) {
+      isDarkMode = localStorageDarkMode;
+    }
+  }
+
   const bgColorClass = isDarkMode ? "bg-gray-950" : "bg-gray-100";
   const textColorClass = isDarkMode ? "text-white" : "text-gray-900";
   const textMutedClass = isDarkMode ? "text-gray-400" : "text-gray-700";
+
+  useEffect(() => {
+    // Escuchar cambios en localStorage y actualizar el estado si cambia
+    const handleStorageChange = (e) => {
+      if (e.key === "darkMode") {
+        const newValue = JSON.parse(e.newValue);
+        isDarkMode !== newValue && window.location.reload();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
   return (
     <div className={`min-h-screen p-8 ${bgColorClass}`}>
       <div className={`text-4xl font-bold mb-4 ${textColorClass}`}>

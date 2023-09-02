@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/extra/NavBar";
 import { DarkModeProvider, useDarkMode } from "./context";
 import "tailwindcss/tailwind.css";
+import Main from "@/components/Main";
 
 export default function RootLayout({ children }) {
   return (
@@ -12,7 +13,6 @@ export default function RootLayout({ children }) {
     </DarkModeProvider>
   );
 }
-
 function DarkModeLayout({ children }) {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [localStorageDarkMode, setLocalStorageDarkMode] = useState(null);
@@ -56,7 +56,10 @@ function DarkModeLayout({ children }) {
           >
             Alternar modo oscuro
           </button>
-          {children}
+
+          <Main
+            dark={localStorageDarkMode !== null && localStorageDarkMode}
+          ></Main>
         </main>
       </body>
     </html>
