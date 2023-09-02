@@ -1,8 +1,10 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDarkMode } from "./context";
 import { format } from "date-fns";
+
 
 function Page() {
   const { darkMode } = useDarkMode();
@@ -16,6 +18,10 @@ function Page() {
   ];
 
   const [repoData, setRepoData] = useState([]);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [bgColorClass, setBgColorClass] = useState("");
+  const [textColorClass, setTextColorClass] = useState("");
+  const [textMutedClass, setTextMutedClass] = useState("");
 
   const getRepo = async (url) => {
     try {
@@ -30,17 +36,30 @@ function Page() {
     window.open(url);
   };
 
+  const updateDarkModeClasses = () => {
+    const storedDarkMode =
+      typeof window !== "undefined" &&
+      JSON.parse(localStorage.getItem("darkMode"));
+    setIsDarkMode(storedDarkMode);
+    setBgColorClass(storedDarkMode ? "bg-gray-950" : "bg-gray-100");
+    setTextColorClass(storedDarkMode ? "text-white" : "text-gray-900");
+    setTextMutedClass(storedDarkMode ? "text-gray-400" : "text-gray-700");
+  };
+
   useEffect(() => {
     linkArray.forEach(getRepo);
-  }, []);
 
-  // Mover estas líneas dentro del useEffect para evitar problemas en el servidor
-  const isDarkMode =
-    typeof window !== "undefined" &&
-    JSON.parse(localStorage.getItem("darkMode"));
-  const bgColorClass = isDarkMode ? "bg-gray-950" : "bg-gray-100";
-  const textColorClass = isDarkMode ? "text-white" : "text-gray-900";
-  const textMutedClass = isDarkMode ? "text-gray-400" : "text-gray-700";
+    // Update dark mode classes initially
+    updateDarkModeClasses();
+
+    // Listen for changes in localStorage
+    window.addEventListener("storage", updateDarkModeClasses);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("storage", updateDarkModeClasses);
+    };
+  }, []);
 
   return (
     <div className={`min-h-screen p-8 ${bgColorClass}`}>
@@ -50,11 +69,10 @@ function Page() {
             <div
               key={index}
               className={`p-4 rounded shadow-lg ${
-                isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+                isDarkMode ? "bg-gray-800 text-white" : "bg-gray-200"
               } transition-all hover:${
                 isDarkMode ? "brightness-125" : "brightness-75"
               }`}
-              onClick={() => handleCardClick(data.html_url)}
             >
               <div className={`flex items-center ${textColorClass}`}>
                 <div className="text-2xl font-bold mb-4">{data.name}</div>
@@ -79,6 +97,13 @@ function Page() {
                 Última actualización:
                 {format(new Date(data.pushed_at), "dd/MM/yyyy HH:mm")}
               </div>
+
+              <button
+                className={`bg-blue-500 text-white p-2 rounded`}
+                onClick={() => window.open(data.html_url)}
+              >
+                Ver en GitHub
+              </button>
             </div>
           ))
         ) : (

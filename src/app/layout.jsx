@@ -1,4 +1,5 @@
 "use client"
+
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import { DarkModeProvider, useDarkMode } from "./context";
@@ -21,18 +22,17 @@ function DarkModeLayout({ children }) {
       const storedDarkMode = window.localStorage.getItem("darkMode");
       if (storedDarkMode !== null) {
         setLocalStorageDarkMode(storedDarkMode === "true");
-        toggleDarkMode(storedDarkMode === "true");
       }
     } else {
       console.log("No se pudo acceder a local storage");
     }
-  }, [toggleDarkMode]);
+  }, []);
 
   const toggleDarkModeFunc = () => {
     const newDarkMode = !darkMode;
-    toggleDarkMode(newDarkMode);
     setLocalStorageDarkMode(newDarkMode);
     window.localStorage.setItem("darkMode", newDarkMode.toString());
+    toggleDarkMode(newDarkMode);
   };
 
   return (
