@@ -34,7 +34,10 @@ function Page() {
     linkArray.forEach(getRepo);
   }, []);
 
-  const isDarkMode = JSON.parse(localStorage.getItem("darkMode"));
+  // Mover estas líneas dentro del useEffect para evitar problemas en el servidor
+  const isDarkMode =
+    typeof window !== "undefined" &&
+    JSON.parse(localStorage.getItem("darkMode"));
   const bgColorClass = isDarkMode ? "bg-gray-950" : "bg-gray-100";
   const textColorClass = isDarkMode ? "text-white" : "text-gray-900";
   const textMutedClass = isDarkMode ? "text-gray-400" : "text-gray-700";

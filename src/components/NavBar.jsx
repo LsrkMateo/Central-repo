@@ -1,6 +1,7 @@
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function NavBar({ dark }) {
+  const router = useRouter();
   // Clases de estilo base que son comunes a ambas versiones (claro y oscuro)
   const commonClasses = "block p-2 pl-3 pr-4 rounded md:p-0";
 
@@ -10,10 +11,17 @@ function NavBar({ dark }) {
   const darkModeClasses =
     "text-gray-200 bg-gray-950  md:hover:bg-transparent md:border-0 md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent";
 
+  const handleNavigation = (url) => {
+    window.location.href = url;
+  };
+
   return (
     <nav className={`${dark ? "bg-gray-950" : "bg-gray-200"}`}>
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <Link href={"/"} className="flex items-center">
+        <button
+          onClick={() => handleNavigation("/")}
+          className="flex items-center"
+        >
           <span
             className={`self-center text-2xl font-semibold whitespace-nowrap ${
               dark ? "text-white" : "text-black"
@@ -21,7 +29,7 @@ function NavBar({ dark }) {
           >
             Repositorio de proyectos
           </span>
-        </Link>
+        </button>
         <button
           data-collapse-toggle="navbar-default"
           type="button"
@@ -60,54 +68,57 @@ function NavBar({ dark }) {
             }`}
           >
             <li>
-              <Link
-                href={"/documentacion"}
+              <button
+                onClick={() => handleNavigation("/documentacion")}
                 className={`${commonClasses} ${
                   dark ? darkModeClasses : lightModeClasses
                 }`}
               >
                 Documentacion
-              </Link>
+              </button>
             </li>
             <li>
-              <Link
-                href={"/videos"}
+              <button
+                onClick={() => handleNavigation("/videos")}
                 className={`${commonClasses} ${
                   dark ? darkModeClasses : lightModeClasses
                 }`}
               >
                 Videos
-              </Link>
+              </button>
             </li>
             <li>
-              <Link
-                href={"/blogs"}
+              <button
+                onClick={() => handleNavigation("/blogs")}
                 className={`${commonClasses} ${
                   dark ? darkModeClasses : lightModeClasses
                 }`}
               >
                 Blogs
-              </Link>
+              </button>
             </li>
             <li>
-              <Link
-                href={"/contacto"}
+              <button
+                onClick={() => handleNavigation("/contacto")}
                 className={`${commonClasses} ${
                   dark ? darkModeClasses : lightModeClasses
                 }`}
               >
                 Contacto
-              </Link>
+              </button>
             </li>
             <li className="w-6 h-6">
-              <Link href={"/juegos"} className={`${commonClasses}`}>
+              <button
+                onClick={() => handleNavigation("/juegos")}
+                className={`${commonClasses}`}
+              >
                 <img
                   src={`${
                     dark ? "./misterio-red.png" : "./misterio-black.png"
                   }`}
                   alt="a"
                 />
-              </Link>
+              </button>
             </li>
           </ul>
         </div>

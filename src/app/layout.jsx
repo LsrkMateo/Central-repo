@@ -1,5 +1,5 @@
-"use client";
-import { useEffect } from "react";
+"use client"
+import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import { DarkModeProvider, useDarkMode } from "./context";
 import "tailwindcss/tailwind.css";
@@ -14,39 +14,42 @@ export default function RootLayout({ children }) {
 
 function DarkModeLayout({ children }) {
   const { darkMode, toggleDarkMode } = useDarkMode();
+  const [localStorageDarkMode, setLocalStorageDarkMode] = useState(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedDarkMode = window.localStorage.getItem("darkMode");
       if (storedDarkMode !== null) {
+        setLocalStorageDarkMode(storedDarkMode === "true");
         toggleDarkMode(storedDarkMode === "true");
       }
     } else {
-      console.log("no se pudo acceder a local storage");
+      console.log("No se pudo acceder a local storage");
     }
   }, [toggleDarkMode]);
 
   const toggleDarkModeFunc = () => {
     const newDarkMode = !darkMode;
     toggleDarkMode(newDarkMode);
-    window.localStorage.setItem("darkMode", newDarkMode);
+    setLocalStorageDarkMode(newDarkMode);
+    window.localStorage.setItem("darkMode", newDarkMode.toString());
   };
 
   return (
     <html lang="en">
       <body
         className={`${
-          JSON.parse(window.localStorage.getItem("darkMode"))
+          localStorageDarkMode !== null && localStorageDarkMode
             ? "bg-gray-900"
             : "bg-white"
         }`}
       >
-        <NavBar dark={JSON.parse(localStorage.getItem("darkMode"))} />
+        <NavBar dark={localStorageDarkMode !== null && localStorageDarkMode} />
         <main className={`container mx-auto px-5 mt-4`}>
           <button
             onClick={toggleDarkModeFunc}
             className={`px-4 py-2 rounded ${
-              JSON.parse(localStorage.getItem("darkMode"))
+              localStorageDarkMode !== null && localStorageDarkMode
                 ? "bg-gray-700 text-white"
                 : "bg-gray-200 text-gray-800"
             }`}
