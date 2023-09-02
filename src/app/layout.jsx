@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import NavBar from "../components/NavBar";
 import { DarkModeProvider, useDarkMode } from "./context";
 import "tailwindcss/tailwind.css";
@@ -51,7 +51,7 @@ function DarkModeLayout({ children }) {
                 : "bg-gray-200 text-gray-800"
             }`}
           >
-            Alternar modo oscuro 
+            Alternar modo oscuro
           </button>
           {children}
         </main>

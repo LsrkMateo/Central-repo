@@ -102,7 +102,9 @@ function NavBar({ dark }) {
             <li className="w-6 h-6">
               <Link href={"/juegos"} className={`${commonClasses}`}>
                 <img
-                  src={`${dark ? "./misterio-red.png" : "./misterio-black.png"}`}
+                  src={`${
+                    dark ? "./misterio-red.png" : "./misterio-black.png"
+                  }`}
                   alt="a"
                 />
               </Link>
