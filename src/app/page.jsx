@@ -4,9 +4,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDarkMode } from "./context";
 import { format } from "date-fns";
-
+import { useRouter } from "next/navigation";
 
 function Page() {
+  const router = useRouter();
   const { darkMode } = useDarkMode();
   const linkArray = [
     "https://api.github.com/repos/getcursor/cursor",
@@ -33,7 +34,8 @@ function Page() {
   };
 
   const handleCardClick = (url) => {
-    window.open(url);
+    router.push(`${url}`);
+    console.log(url);
   };
 
   const updateDarkModeClasses = () => {
@@ -67,6 +69,7 @@ function Page() {
         {repoData.length > 0 ? (
           repoData.map((data, index) => (
             <div
+              onClick={() => handleCardClick(data.id)}
               key={index}
               className={`p-4 rounded shadow-lg ${
                 isDarkMode ? "bg-gray-800 text-white" : "bg-gray-200"
