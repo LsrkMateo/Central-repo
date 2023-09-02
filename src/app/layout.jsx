@@ -24,7 +24,7 @@ function DarkModeLayout({ children }) {
     } else {
       console.log("no se pudo acceder a local storage");
     }
-  }, []);
+  }, [toggleDarkMode]);
 
   const toggleDarkModeFunc = () => {
     const newDarkMode = !darkMode;
