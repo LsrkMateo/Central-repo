@@ -1,6 +1,7 @@
-"use client"
-import { useDarkMode } from "../context";
+"use client";
 
+import { useDarkMode } from "../context";
+import Link from "next/link";
 function Documentacion() {
   const { darkMode } = useDarkMode();
   const isDarkMode = JSON.parse(localStorage.getItem("darkMode"));
@@ -23,40 +24,58 @@ function Documentacion() {
         escribiendo, que pueden ser documentación o simplemente un punto de
         vista ante cualquier noticia.
       </div>
-      <div className={`text-3xl font-bold mb-4 mt-4 ${textColorClass}`}>
-        Manejo del modo oscuro:
-      </div>
-      <div className={`mb-2 ${textMutedClass}`}>
-        Se utiliza localStorage para acceder al valor booleano de `darkMode`.
-        Dependiendo de este valor, se aplican los estilos utilizando el operador
-        ternario para el modo oscuro o claro.
-        <div className={`text-2xl font-bold mb-4 mt-4 ${textColorClass}`}>
-          Solución al error ReferenceError: localStorage is not defined (proceso
-          de corrección, aún no se ha arreglado el problema):
-        </div>
-        Origen del error: Esto se debe a que el entorno de ejecución de Next.js
-        es en el lado del servidor, mientras que localStorage se encuentra en el
-        lado del cliente, por lo que es imposible acceder a este objeto. Se crea
-        una función que utiliza useEffect para acceder al localStorage del
-        navegador. Esta función devuelve el valor de la clave 'darkMode', y
-        luego se utiliza para aplicar los estilos a los elementos.
-      </div>
-      <div className={`text-2xl font-bold mt-4 mb-2 ${textColorClass}`}>
-        Github Actions:
-      </div>
-      <div className={`mb-2 ${textMutedClass}`}>Construcción...</div>
-      <div className={`text-2xl font-bold mt-4 mb-2 ${textColorClass}`}>
-        Descubrimientos extra:
-      </div>
-      <div className={`mb-4 ${textMutedClass}`}>
-        Aquí se colocan los descubrimientos que voy haciendo, como el enrutado
-        utilizando page.jsx e importación de imágenes desde la ruta "public".
-      </div>
-      <div>
-        consumir api de steam
-      </div>
-      <div>
-        consumir api de github
+
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Link href={"/documentacion/modo-oscuro"} className="boton-link">
+          <div
+            className={`p-4 rounded shadow-lg ${
+              isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+            } transition-all hover:${
+              isDarkMode ? "brightness-125" : "brightness-75"
+            }`}
+          >
+            Manejo del modo oscuro
+          </div>
+        </Link>
+
+        <Link href={"/documentacion/github-actions"} className="boton-link">
+          <div
+            className={`p-4 rounded shadow-lg ${
+              isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+            } transition-all hover:${
+              isDarkMode ? "brightness-125" : "brightness-75"
+            }`}
+          >
+            Github actions
+          </div>
+        </Link>
+
+        <Link
+          href={"/documentacion/descubrimientos-extra"}
+          className="boton-link"
+        >
+          <div
+            className={`p-4 rounded shadow-lg ${
+              isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+            } transition-all hover:${
+              isDarkMode ? "brightness-125" : "brightness-75"
+            }`}
+          >
+            Descubrimientos extra
+          </div>
+        </Link>
+
+        <Link href={"/documentacion/apis"} className="boton-link">
+          <div
+            className={`p-4 rounded shadow-lg ${
+              isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+            } transition-all hover:${
+              isDarkMode ? "brightness-125" : "brightness-75"
+            }`}
+          >
+            consumo de apis
+          </div>
+        </Link>
       </div>
     </div>
   );
