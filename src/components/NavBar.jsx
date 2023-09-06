@@ -1,18 +1,15 @@
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 function NavBar({ dark }) {
-  const router = useRouter();
-  // Clases de estilo base que son comunes a ambas versiones (claro y oscuro)
-  const commonClasses = "block p-2 pl-3 pr-4 rounded md:p-0";
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Clases de estilo específicas para el modo claro y oscuro
-  const lightModeClasses =
-    "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent";
-  const darkModeClasses =
-    "text-gray-200 bg-gray-950  md:hover:bg-transparent md:border-0 md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent";
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const handleNavigation = (url) => {
     window.location.href = url;
+    setIsMenuOpen(false);
   };
 
   return (
@@ -30,14 +27,30 @@ function NavBar({ dark }) {
             Repositorio de proyectos
           </span>
         </button>
+        <div className="hidden md:flex space-x-4 dark:text-gray-200">
+          <button onClick={() => handleNavigation("/documentacion")}>
+            Documentacion
+          </button>
+          <button onClick={() => handleNavigation("/videos")}>Videos</button>
+          <button onClick={() => handleNavigation("/blogs")}>Blogs</button>
+          <button onClick={() => handleNavigation("/contacto")}>
+            Contacto
+          </button>
+          <button onClick={() => handleNavigation("/juegos")}>
+            <img
+              src={`${dark ? "./misterio-red.png" : "./misterio-black.png"}`}
+              alt="a"
+              width={30}
+              height={30}
+            />
+          </button>
+        </div>
         <button
-          data-collapse-toggle="navbar-default"
           type="button"
-          className={`inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200`}
-          aria-controls="navbar-default"
-          aria-expanded="false"
+          onClick={toggleMenu}
+          className={`md:hidden inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200`}
         >
-          <span className="sr-only">Open main menu</span>
+          <span className="sr-only">Abrir menú principal</span>
           <svg
             className="w-5 h-5"
             aria-hidden="true"
@@ -54,74 +67,48 @@ function NavBar({ dark }) {
             />
           </svg>
         </button>
-        <div
-          className={`hidden w-full md:block md:w-auto ${
-            dark ? "md:bg-gray-850" : "md:bg-gray-200"
-          }`}
-          id="navbar-default"
-        >
-          <ul
-            className={`font-medium flex flex-col p-4 md:p-0 mt-4 border md:flex-row md:space-x-8 md:mt-0 md:border-0 ${
-              dark
-                ? "md:bg-gray-950 md:border-gray-950"
-                : "md:bg-gray-200 md:border-gray-200"
+        {isMenuOpen && (
+          <div
+            className={`md:hidden w-full ${
+              dark ? "bg-gray-850" : "bg-gray-200"
             }`}
           >
-            <li>
-              <button
-                onClick={() => handleNavigation("/documentacion")}
-                className={`${commonClasses} ${
-                  dark ? darkModeClasses : lightModeClasses
-                }`}
-              >
-                Documentacion
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleNavigation("/videos")}
-                className={`${commonClasses} ${
-                  dark ? darkModeClasses : lightModeClasses
-                }`}
-              >
-                Videos
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleNavigation("/blogs")}
-                className={`${commonClasses} ${
-                  dark ? darkModeClasses : lightModeClasses
-                }`}
-              >
-                Blogs
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleNavigation("/contacto")}
-                className={`${commonClasses} ${
-                  dark ? darkModeClasses : lightModeClasses
-                }`}
-              >
-                Contacto
-              </button>
-            </li>
-            <li className="w-6 h-6">
-              <button
-                onClick={() => handleNavigation("/juegos")}
-                className={`${commonClasses}`}
-              >
-                <img
-                  src={`${
-                    dark ? "./misterio-red.png" : "./misterio-black.png"
-                  }`}
-                  alt="a"
-                />
-              </button>
-            </li>
-          </ul>
-        </div>
+            <ul className="font-medium flex flex-col p-4 space-y-4 dark:text-gray-300">
+              <li>
+                <button onClick={() => handleNavigation("/documentacion")}>
+                  Documentacion
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNavigation("/videos")}>
+                  Videos
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNavigation("/blogs")}>
+                  Blogs
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNavigation("/contacto")}>
+                  Contacto
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNavigation("/juegos")}>
+                  <img
+                    src={`${
+                      dark ? "./misterio-red.png" : "./misterio-black.png"
+                    }`}
+                    alt="a"
+                    width={30}
+                    height={30}
+                  />
+                </button>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </nav>
   );
