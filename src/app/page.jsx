@@ -5,7 +5,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 
-function page({ dark }) {
+function Page({ dark }) {
   console.log(dark);
   const router = useRouter();
   const linkArray = [
@@ -93,4 +93,4 @@ function page({ dark }) {
   );
 }
 
-export default page;
+export default Page;

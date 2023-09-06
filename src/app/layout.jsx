@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import NavBar from "../components/extra/NavBar";
+import NavBar from "../components/NavBar";
 import "tailwindcss/tailwind.css";
 
 export default function RootLayout({ children }) {
