@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import "tailwindcss/tailwind.css";
+import { Helmet } from "react-helmet";
 
 export default function RootLayout({ children }) {
   const [darkMode, setDarkMode] = useState(false);
@@ -31,8 +32,12 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <Helmet>
+        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+      </Helmet>
       <body className="dark:bg-gray-900 bg-white">
         <NavBar dark={darkMode} />
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <main className={`container mx-auto px-5 mt-4`}>
           <button
             onClick={toggleDarkModeFunc}
@@ -47,6 +52,8 @@ export default function RootLayout({ children }) {
 
           {children}
         </main>
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>AOS.init();</script>
       </body>
     </html>
   );

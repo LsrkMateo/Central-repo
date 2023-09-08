@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import SubCard from "@/components/SubCard";
 function Documentacion() {
   return (
     <div className="min-h-screen p-8 dark:bg-gray-950 dark:text-white">
@@ -9,7 +8,7 @@ function Documentacion() {
       >
         Documentación:
       </div>
-      <div className="dark:text-gray-400 text-gray-700">
+      <div className="dark:text-gray-400 text-gray-700 mb-4">
         El objetivo de este proyecto es centralizar los proyectos que yo, como
         desarrollador principiante, voy creando. Se hace uso de Next.js con
         estilos Tailwind CSS para la construcción de la página. También se hace
@@ -19,42 +18,22 @@ function Documentacion() {
         escribiendo, que pueden ser documentación o simplemente un punto de
         vista ante cualquier noticia.
       </div>
-
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <Link href={"/documentacion/modo-oscuro"} className="boton-link">
-          <div
-            className={`p-4 rounded shadow-lg dark:bg-gray-800 dark:text-white text-black transition-all hover:brightness-75 hover:dark:brightness-125 `}
-          >
-            Manejo del modo oscuro
-          </div>
-        </Link>
+        <SubCard href={"/documentacion/modo-oscuro"}>
+          Manejo del modo oscuro
+        </SubCard>
 
-        <Link href={"/documentacion/github-actions"} className="boton-link">
-          <div
-            className={`p-4 rounded shadow-lg dark:bg-gray-800 dark:text-white text-black transition-all hover:brightness-75 hover:dark:brightness-125 `}
-          >
-            Github actions
-          </div>
-        </Link>
+        <SubCard href={"/documentacion/github-actions"}>Github actions</SubCard>
 
-        <Link
-          href={"/documentacion/descubrimientos-extra"}
-          className="boton-link"
-        >
-          <div
-            className={`p-4 rounded shadow-lg dark:bg-gray-800 dark:text-white text-black transition-all hover:brightness-75 hover:dark:brightness-125 `}
-          >
-            Descubrimientos extra
-          </div>
-        </Link>
+        <SubCard href={"/documentacion/descubrimientos-extra"}>
+          Descubrimientos extra
+        </SubCard>
 
-        <Link href={"/documentacion/apis"} className="boton-link">
-          <div
-            className={`p-4 rounded shadow-lg dark:bg-gray-800 dark:text-white text-black transition-all hover:brightness-75 hover:dark:brightness-125 `}
-          >
-            Consumo de APIs
-          </div>
-        </Link>
+        <SubCard href={"/documentacion/apis"}>Consumo de APIs</SubCard>
+
+        <SubCard href={"/documentacion/machinelearning"}>
+          IA y machine learning
+        </SubCard>
       </div>
     </div>
   );
