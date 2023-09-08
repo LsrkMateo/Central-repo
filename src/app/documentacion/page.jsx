@@ -34,6 +34,9 @@ function Documentacion() {
         <SubCard href={"/documentacion/machinelearning"}>
           IA y machine learning
         </SubCard>
+        <SubCard href={"/documentacion/haking-etico"}>
+          Haking etico
+        </SubCard>
       </div>
     </div>
   );
