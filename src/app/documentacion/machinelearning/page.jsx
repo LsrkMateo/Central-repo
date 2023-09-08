@@ -27,7 +27,7 @@ function page() {
             con el tema
           </div>
         </div>
-        <div className="grid gap-4">
+        <div className="grid gap-4" >
           <SubCard href={"/documentacion/machinelearning/primera-red-neuronal"}>
             1) Primera red neuronal, usando Tensorflow
           </SubCard>

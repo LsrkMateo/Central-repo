@@ -19,8 +19,8 @@ function Documentacion() {
         vista ante cualquier noticia.
       </div>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <SubCard href={"/documentacion/modo-oscuro"}>
-          Manejo del modo oscuro
+        <SubCard href={"/documentacion/documentacion-main"}>
+          Documentacion principal
         </SubCard>
 
         <SubCard href={"/documentacion/github-actions"}>Github actions</SubCard>
