@@ -8,7 +8,7 @@ function Page() {
   return (
     <div>
       <div className="min-h-screen p-8 dark:bg-gray-950 dark:text-white bg-gray-200">
-      <div className="text-5xl font-bold dark:text-white text-black mb-5">
+      <div className="text-4xl font-bold dark:text-white text-black mb-5">
         Selecciona la imagen que quieras :D
         </div>
         <div className="text-4xl font-bold dark:text-white text-black">

@@ -31,6 +31,9 @@ function page() {
           <SubCard href={"/videos/subida-imagenes"}>
             1) Nextjs & Cloudinary - Subida de archivos a la nube
           </SubCard>
+          <SubCard href={"/videos/sonner"}>
+            2) Sonner, Genera Toast o Mensajes con React (y otros Frameworks)
+          </SubCard>
         
         </div>
       </div>
