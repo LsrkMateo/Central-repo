@@ -30,7 +30,7 @@ const CodeBlock = ({ code, language = "", copyable = true }) => {
           </CopyToClipboard>
         )}
 
-        <code className="block dark:bg-gray-950 dark:text-white bg-gray-200 p-2 rounded-md ">
+        <code className="xs:text-xs sm:text-sm block lg:text-lg xl:text-3xl dark:bg-gray-950 dark:text-white bg-gray-200 p-2 rounded-md ">
           {code}
         </code>
       </div>
