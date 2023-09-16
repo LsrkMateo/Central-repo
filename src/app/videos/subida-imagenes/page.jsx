@@ -2,7 +2,7 @@
 import React from "react";
 import CodeBlock from "@/components/CodeBlock";
 import { useState } from "react";
-function page() {
+function Page() {
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   return (
@@ -61,4 +61,4 @@ module.exports = nextConfig"
   );
 }
 
-export default page;
+export default Page;
