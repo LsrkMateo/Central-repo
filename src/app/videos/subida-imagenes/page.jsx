@@ -1,48 +1,99 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import CodeBlock from "@/components/CodeBlock";
-import { useState } from "react";
+import { Toaster, toast } from "sonner";
+
 function Page() {
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+
+  const handleUpload = async () => {
+    if (!file) {
+      throw new Error("Por favor, selecciona una imagen.");
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("../../../api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al subir la imagen.");
+      }
+
+      const data = await response.json();
+
+      setImageUrl(data.url);
+      return data; // Devuelve los datos para la resolución exitosa de la promesa
+    } catch (error) {
+      console.error(error);
+      throw error; // Lanza el error para la resolución fallida de la promesa
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await toast.promise(handleUpload(), {
+        loading: "Subiendo imagen...",
+        success: "Imagen subida satisfactoriamente.",
+        error: "Error al subir la imagen.",
+      });
+    } catch (error) {
+      toast.error(error.message); // Mostrar mensaje de error si no se selecciona un archivo
+    }
+  };
+
   return (
     <div>
       <div className="min-h-screen p-8 dark:bg-gray-950 dark:text-white bg-gray-200">
-      <div className="text-4xl font-bold dark:text-white text-black mb-5">
-        Selecciona la imagen que quieras :D
+        <div className="text-4xl font-bold dark:text-white text-black mb-5">
+          Selecciona la imagen que quieras :D
         </div>
         <div className="text-4xl font-bold dark:text-white text-black">
           <form
-            onSubmit={async (e) => {
-              e.preventDefault();
-
-              const formData = new FormData();
-              formData.append("file", file);
-
-              const response = await fetch("../../../api/upload", {
-                method: "POST",
-                body: formData,
-              });
-              const data = await response.json();
-
-              setImageUrl(data.url);
-            }}
+            onSubmit={handleSubmit}
+            className="mb-6 p-4 bg-white shadow-md rounded-lg"
           >
-            <input
-              type="file"
-              onChange={(e) => {
-                setFile(e.target.files[0]);
-              }}
-            />
-            <button className="mb-20"> Enviar </button>
+            <div className="mb-4">
+              <label
+                htmlFor="file"
+                className="block text-gray-700 font-semibold mb-2"
+              >
+                Seleccionar archivo:
+              </label>
+              <input
+                type="file"
+                id="file"
+                name="file"
+                onChange={(e) => {
+                  setFile(e.target.files[0]);
+                }}
+                className="w-full px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none focus:bg-white"
+              />
+            </div>
+            <div className="text-center">
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition duration-300"
+              >
+                Enviar
+              </button>
+            </div>
           </form>
+
           <div className="p-8 mb-10 dark:bg-gray-900 dark:text-white bg-gray-200">
             {imageUrl && <img src={imageUrl} alt="gato :3" />}
           </div>
-          <div className="mb-4">Solucion error:</div>
+          <div className="mb-4">Solución error:</div>
           <div className="text-lg mb-7">
             - error StaticGenBailoutError: Page with `dynamic = "error"`
-            couldn't be rendered statical
+            couldn't be rendered statically
           </div>
           <CodeBlock
             code="/**
@@ -53,10 +104,11 @@ const nextConfig = {
 }
  
 module.exports = nextConfig"
-            language="JavaScript"
+            language="JavaScript - (next.config.js)"
           ></CodeBlock>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }

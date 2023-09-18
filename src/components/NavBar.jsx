@@ -13,7 +13,7 @@ function NavBar({ dark }) {
   };
 
   return (
-    <nav className={`${dark ? "bg-gray-950" : "bg-gray-200"}`}>
+    <nav className={`${dark ? "bg-gray-950" : "bg-gray-200"} `}>
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <button
           onClick={() => handleNavigation("/")}
@@ -67,10 +67,12 @@ function NavBar({ dark }) {
             />
           </svg>
         </button>
-        {isMenuOpen && (
+      </div>
+      {isMenuOpen && (
+        <div className="w-full flex justify-end">
           <div
-            className={`md:hidden w-full ${
-              dark ? "bg-gray-850" : "bg-gray-200"
+            className={`md:hidden absolute h-max flex justify-center items-center ${
+              dark ? "bg-gray-800" : "bg-gray-200"
             }`}
           >
             <ul className="font-medium flex flex-col p-4 space-y-4 dark:text-gray-300">
@@ -100,16 +102,16 @@ function NavBar({ dark }) {
                     src={`${
                       dark ? "./misterio-red.png" : "./misterio-black.png"
                     }`}
-                    alt="a"
-                    width={30}
-                    height={30}
+                    alt="Juegos"
+                    width={40}
+                    height={60}
                   />
                 </button>
               </li>
             </ul>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 }

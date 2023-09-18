@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
-import { NextApiResponse } from "next";
-import { writeFile } from "fs/promises";
-import path from "path";
+
 import { v2 as cloudinary } from "cloudinary";
-import { NodeNextResponse } from "next/dist/server/base-http/node";
+
 
 cloudinary.config({
   cloud_name: "dudftt5ha",
