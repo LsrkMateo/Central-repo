@@ -19,7 +19,7 @@ function Page() {
   ];
 
   const [repoData, setRepoData] = useState([]);
-
+  console.log(process.env.PRUEBA)
   const getRepo = async (url) => {
     try {
       const response = await axios.get(url);
