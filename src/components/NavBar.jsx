@@ -1,6 +1,8 @@
 import { useState } from "react";
-
+import { signIn, signOut, useSession } from "next-auth/react";
 function NavBar({ dark }) {
+  const { data: session } = useSession();
+  console.log(session);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -36,14 +38,29 @@ function NavBar({ dark }) {
           <button onClick={() => handleNavigation("/contacto")}>
             Contacto
           </button>
-          <button onClick={() => handleNavigation("/juegos")}>
-            <img
-              src={`${dark ? "./misterio-red.png" : "./misterio-black.png"}`}
-              alt="a"
-              width={30}
-              height={30}
-            />
-          </button>
+          <button onClick={() => handleNavigation("/juegos")}>Juegos</button>
+          {session?.user ? (
+            <div className="flex flex-row">
+              <div className="flex column gap-5 items-center cursor-pointer">
+                <img src={session.user.image} className="w-10 h-10" alt="" />
+              </div>
+              <button
+                className=" text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                onClick={signOut}
+              >
+                Salir de la session
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={async () => {
+                signIn();
+              }}
+              className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            >
+              Crear cuenta
+            </button>
+          )}
         </div>
         <button
           type="button"
@@ -98,15 +115,36 @@ function NavBar({ dark }) {
               </li>
               <li>
                 <button onClick={() => handleNavigation("/juegos")}>
-                  <img
-                    src={`${
-                      dark ? "./misterio-red.png" : "./misterio-black.png"
-                    }`}
-                    alt="Juegos"
-                    width={40}
-                    height={60}
-                  />
+                  Juegos
                 </button>
+              </li>
+              <li>
+                {session?.user ? (
+                  <div className="flex flex-row">
+                    <div className="flex column gap-5 items-center cursor-pointer">
+                      <img
+                        src={session.user.image}
+                        className="w-10 h-10"
+                        alt=""
+                      />
+                    </div>
+                    <button
+                      className=" text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                      onClick={async () => signOut}
+                    >
+                      Salir de la session
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={async () => {
+                      signIn();
+                    }}
+                    className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                  >
+                    Crear cuenta
+                  </button>
+                )}
               </li>
             </ul>
           </div>

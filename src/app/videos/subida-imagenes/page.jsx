@@ -53,9 +53,9 @@ function Page() {
     <div>
       <div className="min-h-screen p-8 dark:bg-gray-950 dark:text-white bg-gray-200">
         <div className="text-4xl font-bold dark:text-white text-black mb-5">
-          Selecciona la imagen que quieras :D
+          Selecciona una imagen:
         </div>
-        <div className="text-4xl font-bold dark:text-white text-black">
+        <div className="text-2xl font-bold dark:text-white text-black">
           <form
             onSubmit={handleSubmit}
             className="mb-6 p-4 bg-white shadow-md rounded-lg"
@@ -80,7 +80,7 @@ function Page() {
             <div className="text-center">
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition duration-300"
+                className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
               >
                 Enviar
               </button>

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Card from "@/components/Card";
+import Card from "../components/Card"
 
 function Page() {
   const router = useRouter();

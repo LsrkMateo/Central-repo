@@ -1,4 +1,4 @@
-import SubCard from "@/components/SubCard";
+import SubCard from "../../components/SubCard";
 function Documentacion() {
   return (
     <div className="min-h-screen p-8 dark:bg-gray-950 dark:text-white">

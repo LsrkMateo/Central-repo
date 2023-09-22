@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import CodeBlock from "@/components/CodeBlock";
+import CodeBlock from "../../../components/CodeBlock";
 function DocumentacionMain() {
   return (
     <div

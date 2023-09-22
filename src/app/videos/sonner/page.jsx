@@ -17,7 +17,7 @@ function page() {
       <h1 className="text-4xl font-bold dark:text-white text-black mb-5">
         Mensajes toast
       </h1>
-      <div className="flex gap-5">
+      <div className="flex flex-wrap gap-5 ">
         <button
           onClick={() => {
             toast.error("Algo salio mal");

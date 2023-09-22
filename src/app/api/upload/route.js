@@ -4,9 +4,9 @@ import { v2 as cloudinary } from "cloudinary";
 
 
 cloudinary.config({
-  cloud_name: "dudftt5ha",
-  api_key: "364637126334655",
-  api_secret: "MXr1-ajRSqGHzpsq0oY2-Fnb_jA",
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
 });
 export async function POST(request) {
   const data = await request.formData();
