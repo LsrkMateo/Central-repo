@@ -1,5 +1,5 @@
 import React from "react";
-import SubCard from "@/components/SubCard";
+import SubCard from "../../components/SubCard";
 function page() {
   return (
     <div>

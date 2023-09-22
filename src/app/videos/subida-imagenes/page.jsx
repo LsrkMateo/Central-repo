@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import CodeBlock from "@/components/CodeBlock";
+import CodeBlock from "../../../components/CodeBlock";
 import { Toaster, toast } from "sonner";
 
 function Page() {
