@@ -1,10 +1,17 @@
 import { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { BiExit } from "react-icons/bi";
+import {
+  BiExit,
+  BiGame,
+  BiSolidContact,
+  BiBookOpen,
+  BiVideo,
+  BiBook,
+} from "react-icons/bi";
 import { useRouter } from "next/navigation";
 function NavBar({ dark }) {
   const { data: session } = useSession();
-  console.log(session);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -32,16 +39,38 @@ function NavBar({ dark }) {
             Repositorio de proyectos
           </span>
         </button>
-        <div className="hidden md:flex space-x-4 dark:text-gray-200">
-          <button onClick={() => handleNavigation("/documentacion")}>
-            Documentacion
+        <div className="hidden md:flex flex-row space-x-4 dark:text-gray-200">
+          <button
+            className="flex flex-col gap-1 items-center"
+            onClick={() => handleNavigation("/documentacion")}
+          >
+            Documentacion <BiBookOpen />
           </button>
-          <button onClick={() => handleNavigation("/videos")}>Videos</button>
-          <button onClick={() => handleNavigation("/blogs")}>Blogs</button>
-          <button onClick={() => handleNavigation("/contacto")}>
+          <button
+            className="flex flex-col gap-1 items-center"
+            onClick={() => handleNavigation("/videos")}
+          >
+            Videos <BiVideo />
+          </button>
+          <button
+            className="flex flex-col gap-1 items-center"
+            onClick={() => handleNavigation("/blogs")}
+          >
+            Blogs <BiBook />
+          </button>
+          <button
+            className="flex flex-col gap-1 items-center"
+            onClick={() => handleNavigation("/contacto")}
+          >
             Contacto
+            <BiSolidContact />
           </button>
-          <button onClick={() => handleNavigation("/juegos")}>Juegos</button>
+          <button
+            className="flex flex-col gap-1 items-center"
+            onClick={() => handleNavigation("/juegos")}
+          >
+            juegos <BiGame />
+          </button>
           {session?.user ? (
             <div className="flex flex-row gap-3">
               <div className="flex column gap-5 items-center cursor-pointer">
@@ -56,7 +85,7 @@ function NavBar({ dark }) {
               </div>
               <button
                 className="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                onClick={() => {
+                onClick={async () => {
                   signOut();
                 }}
               >
@@ -145,7 +174,7 @@ function NavBar({ dark }) {
                     </div>
                     <button
                       className=" text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                      onClick={() => {
+                      onClick={async () => {
                         signOut;
                       }}
                     >
