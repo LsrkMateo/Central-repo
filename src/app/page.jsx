@@ -5,7 +5,6 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Card from "../components/Card";
 import { Toaster, toast } from "sonner";
-import { BiArrowToBottom } from "react-icons/bi";
 
 function Page() {
   const [filterBy, setFilterBy] = useState(""); // Estado para almacenar la opción de filtrado seleccionada
@@ -14,7 +13,7 @@ function Page() {
   const [sortBy, setSortBy] = useState(""); // Estado para controlar el orden de los datos
   const [showProperties, setShowProperties] = useState(false); // Estado para mostrar/ocultar el submenú de Propiedades
   const [propertiesFilter, setPropertiesFilter] = useState(""); // Estado para la opción seleccionada en el submenú de Propiedades
-
+  const [mensajeEnviado, setmensajeEnviado] = useState(false);
   const handleFilterChange = (event) => {
     const selectedFilter = event.target.value;
 
@@ -90,12 +89,15 @@ function Page() {
         );
       } else if (filterBy === "lenguaje") {
         // Filtra por lenguaje, solo si data.language no es null
-        toast.success("No se incluiran proyectos sin lenguaje");
         filtered = filtered.filter(
           (data) =>
             data.language &&
             data.language.toLowerCase().includes(searchText.toLowerCase())
         );
+        if (!mensajeEnviado) {
+          toast("No se incluiran proyectos sin lenguaje");
+        }
+        setmensajeEnviado(true);
       }
 
       // Filtra por Propiedades si se selecciona la opción correspondiente
