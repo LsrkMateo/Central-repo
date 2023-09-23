@@ -11,7 +11,7 @@ function Page() {
         <div>
           Hola {session.user.name}! <br /> <br />
           Bienvenido, este es la pagina de tu perfil, accede a ella cada vez que
-          quieras acceder o configurar detalles de tu cuenta. <br /> Eecuerda
+          quieras acceder o configurar detalles de tu cuenta. <br /> Recuerda
           que este proyecto no es mas que una recopilacion de distintos
           proyectos, por lo que sientete libre de juzgar y compartir tus
           opiniones! persona!
