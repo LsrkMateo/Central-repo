@@ -29,6 +29,9 @@ function Card({ data, handleCardClick }) {
         Descripcion: {!data.description ? "no tiene" : data.description}
       </div>
       <div className={`mb-2 dark:text-gray-300 text-gray-600`}>
+        Lenguaje: {!data.language ? "no tiene" : data.language}
+      </div>
+      <div className={`mb-2 dark:text-gray-300 text-gray-600`}>
         Última actualización: 
         {''} {format(new Date(data.pushed_at), "dd/MM/yyyy HH:mm")}
       </div>
