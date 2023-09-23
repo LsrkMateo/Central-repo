@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Card from "../components/Card"
-
+import Card from "../components/Card";
+import { Toaster, toast } from "sonner";
 function Page() {
   const router = useRouter();
   const linkArray = [
@@ -19,7 +19,7 @@ function Page() {
   ];
 
   const [repoData, setRepoData] = useState([]);
-  console.log(process.env.PRUEBA)
+  console.log(process.env.PRUEBA);
   const getRepo = async (url) => {
     try {
       const response = await axios.get(url);
@@ -31,7 +31,7 @@ function Page() {
 
   const handleCardClick = (url) => {
     router.push(`${url}`);
-    console.log(url);
+
   };
 
   useEffect(() => {
@@ -51,6 +51,7 @@ function Page() {
           </div>
         )}
       </div>
+      <Toaster theme="system" richColors />
     </div>
   );
 }
