@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { BiExit } from "react-icons/bi";
+import { useRouter } from "next/navigation";
 function NavBar({ dark }) {
   const { data: session } = useSession();
   console.log(session);
@@ -13,6 +15,7 @@ function NavBar({ dark }) {
     window.location.href = url;
     setIsMenuOpen(false);
   };
+  const router = useRouter();
 
   return (
     <nav className={`${dark ? "bg-gray-950" : "bg-gray-200"} `}>
@@ -40,15 +43,24 @@ function NavBar({ dark }) {
           </button>
           <button onClick={() => handleNavigation("/juegos")}>Juegos</button>
           {session?.user ? (
-            <div className="flex flex-row">
+            <div className="flex flex-row gap-3">
               <div className="flex column gap-5 items-center cursor-pointer">
-                <img src={session.user.image} className="w-10 h-10" alt="" />
+                <img
+                  onClick={() => {
+                    router.push("/dashboard", { scroll: false });
+                  }}
+                  src={session.user.image}
+                  className="w-10 h-10"
+                  alt=""
+                />
               </div>
               <button
-                className=" text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                onClick={signOut}
+                className="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                onClick={() => {
+                  signOut();
+                }}
               >
-                Salir de la session
+                <BiExit />
               </button>
             </div>
           ) : (
@@ -120,9 +132,12 @@ function NavBar({ dark }) {
               </li>
               <li>
                 {session?.user ? (
-                  <div className="flex flex-row">
-                    <div className="flex column gap-5 items-center cursor-pointer">
+                  <div className="flex flex-row gap-3">
+                    <div className="cursor-pointer">
                       <img
+                        onClick={() => {
+                          router.push("/dashboard", { scroll: false });
+                        }}
                         src={session.user.image}
                         className="w-10 h-10"
                         alt=""
@@ -130,9 +145,11 @@ function NavBar({ dark }) {
                     </div>
                     <button
                       className=" text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                      onClick={async () => signOut}
+                      onClick={() => {
+                        signOut;
+                      }}
                     >
-                      Salir de la session
+                      <BiExit />
                     </button>
                   </div>
                 ) : (
