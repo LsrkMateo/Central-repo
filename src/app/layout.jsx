@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import "tailwindcss/tailwind.css";
 import { Helmet } from "react-helmet";
-import { Providers } from "./Providers";
+import { AuthProvider } from "./Providers";
 export default function RootLayout({ children }) {
   const [darkMode, setDarkMode] = useState(false);
 
@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
         <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
       </Helmet>
       <body className="dark:bg-gray-900 bg-white">
-        <Providers>
+        <AuthProvider>
           <NavBar dark={darkMode} />
           <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
           <main className={`container mx-auto px-5 mt-4`}>
@@ -55,7 +55,7 @@ export default function RootLayout({ children }) {
           </main>
           <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
           <script>AOS.init();</script>
-        </Providers>
+        </AuthProvider>
       </body>
     </html>
   );
