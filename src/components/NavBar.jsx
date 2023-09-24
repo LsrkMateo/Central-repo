@@ -32,7 +32,7 @@ function NavBar({ dark }) {
           className="flex items-center"
         >
           <span
-            className={`self-center text-2xl font-semibold whitespace-nowrap ${
+            className={` self-center text-2xl font-semibold whitespace-nowrap ${
               dark ? "text-white" : "text-black"
             }`}
           >

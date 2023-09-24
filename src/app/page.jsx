@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Card from "../components/Card";
 import { Toaster, toast } from "sonner";
-
+import {} from "react-icons/bi";
 function Page() {
   const [filterBy, setFilterBy] = useState(""); // Estado para almacenar la opción de filtrado seleccionada
   const [searchText, setSearchText] = useState(""); // Estado para el texto de búsqueda
@@ -51,6 +51,7 @@ function Page() {
     "https://api.github.com/repos/LsrkMateo/Nextjs-ga-test",
     "https://api.github.com/repos/LsrkMateo/Docker---apache",
     "https://api.github.com/repos/LsrkMateo/python-CLI-proyect",
+    "https://api.github.com/repos/michalsnik/aos",
   ];
 
   const [repoData, setRepoData] = useState([]);
@@ -136,7 +137,7 @@ function Page() {
           <select
             value={filterBy}
             onChange={handleFilterChange}
-            className=" w-auto mx-0 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white py-2 pl-3 pr-10 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-indigo-500"
+            className="mx-0 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white py-2 pl-3 pr-10 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-indigo-500"
           >
             <option value="">Seleccione una opcion de filtracion</option>
             <option value="nombre">Nombre</option>
@@ -150,13 +151,13 @@ function Page() {
         {/* Submenú de Propiedades */}
         {showProperties && (
           <div className="">
-            <label className="block text-gray-700 dark:text-white">
+            <label className="block mt-3 text-gray-700 dark:text-white">
               Filtrar por Propiedades:
             </label>
             <select
               value={propertiesFilter}
               onChange={handlePropertiesFilterChange}
-              className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white py-2 pl-3 pr-10 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-indigo-500"
+              className="mx-0 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white py-2 pl-3 pr-10 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-indigo-500"
             >
               <option value="">Seleccione una opción</option>
               <option value="visibility">Visibility</option>
@@ -167,13 +168,13 @@ function Page() {
         {/*---*/}
         {/* Opciones de ordenamiento */}
         <div className="">
-          <label className="block text-gray-700 dark:text-white">
+          <label className="block mt-3 text-gray-700 dark:text-white">
             Ordenar por:
           </label>
           <select
             value={sortBy}
             onChange={handleSortChange}
-            className="mx-0 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white py-2 pl-3 pr-10 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-indigo-500"
+            className="mx-0 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white py-2 pl-3 pr-10 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-indigo-500"
           >
             <option value="">Seleccione una opción de ordenamiento</option>
             <option value="mas_visto">Del más visto al menos visto</option>

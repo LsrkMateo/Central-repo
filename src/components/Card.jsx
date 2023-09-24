@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { format } from "date-fns";
+import { FaStar } from "react-icons/fa"; // Importa el icono de una estrella
 
 function Card({ data, handleCardClick }) {
+  const [starred, setStarred] = useState(false); // Estado para controlar el cambio de color de la estrella
+
+  const handleStarClick = (e) => {
+    e.stopPropagation(); // Evita que el click en la estrella se propague al botón
+    setStarred(!starred); // Cambia el estado de la estrella al hacer clic
+    
+  };
+
   return (
     <div
       onClick={() => handleCardClick(data.id)}
@@ -32,8 +41,8 @@ function Card({ data, handleCardClick }) {
         Lenguaje: {!data.language ? "no tiene" : data.language}
       </div>
       <div className={`mb-2 dark:text-gray-300 text-gray-600`}>
-        Última actualización: 
-        {''} {format(new Date(data.pushed_at), "dd/MM/yyyy HH:mm")}
+        Última actualización: {""}{" "}
+        {format(new Date(data.pushed_at), "dd/MM/yyyy HH:mm")}
       </div>
 
       <button
@@ -42,6 +51,17 @@ function Card({ data, handleCardClick }) {
       >
         Ver en GitHub
       </button>
+
+      {/* Icono de estrella */}
+      <span
+        className={`text-yellow-500 cursor-pointer ml-2`}
+        onClick={(e) => handleStarClick(e)}
+      >
+        <FaStar
+          size={20}
+          color={starred ? "yellow" : "gray"} // Cambia el color de la estrella
+        />
+      </span>
     </div>
   );
 }
