@@ -45,13 +45,10 @@ function Page() {
     "https://api.github.com/repos/LsrkMateo/Rick-and-morty-api",
     "https://api.github.com/repos/getcursor/cursor",
     "https://api.github.com/repos/nextauthjs/next-auth",
-    "https://api.github.com/repos/LsrkMateo/next-js-mongodb",
-    "https://api.github.com/repos/LsrkMateo/Hashnode-blogs",
-    "https://api.github.com/repos/LsrkMateo/database-test",
-    "https://api.github.com/repos/LsrkMateo/Nextjs-ga-test",
-    "https://api.github.com/repos/LsrkMateo/Docker---apache",
-    "https://api.github.com/repos/LsrkMateo/python-CLI-proyect",
+    "https://api.github.com/repos/linuxmint/cinnamon",
     "https://api.github.com/repos/michalsnik/aos",
+    "https://api.github.com/repos/ubuntu/ubuntu-make",
+    "https://api.github.com/repos/Nikhilthadani/nextjs-13-full-stack-blog",
   ];
 
   const [repoData, setRepoData] = useState([]);

@@ -1,3 +1,4 @@
+import Avatar from "boring-avatars";
 import { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import {
@@ -65,12 +66,7 @@ function NavBar({ dark }) {
             Contacto
             <BiSolidContact />
           </button>
-          <button
-            className="flex flex-col gap-1 items-center"
-            onClick={() => handleNavigation("/juegos")}
-          >
-            juegos <BiGame />
-          </button>
+
           {session?.user ? (
             <div className="flex flex-row gap-3">
               <div className="flex column gap-5 items-center cursor-pointer">
@@ -78,7 +74,10 @@ function NavBar({ dark }) {
                   onClick={() => {
                     router.push("/dashboard", { scroll: false });
                   }}
-                  src={session.user.image}
+                  src={
+                    session.user.image ||
+                    "https://source.boringavatars.com/marble/120/Maria%20Mitchell?colors=264653,2a9d8f,e9c46a,f4a261,e76f51"
+                  }
                   className="w-10 h-10"
                   alt=""
                 />
@@ -93,14 +92,24 @@ function NavBar({ dark }) {
               </button>
             </div>
           ) : (
-            <button
-              onClick={async () => {
-                signIn();
-              }}
-              className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            >
-              Crear cuenta
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={async () => {
+                  router.push("/register");
+                }}
+                className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              >
+                Registarse
+              </button>
+              <button
+                onClick={async () => {
+                  router.push("/login");
+                }}
+                className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              >
+                Iniciar sesion
+              </button>
+            </div>
           )}
         </div>
         <button
@@ -154,11 +163,7 @@ function NavBar({ dark }) {
                   Contacto
                 </button>
               </li>
-              <li>
-                <button onClick={() => handleNavigation("/juegos")}>
-                  Juegos
-                </button>
-              </li>
+
               <li>
                 {session?.user ? (
                   <div className="flex flex-row gap-3">
@@ -167,9 +172,12 @@ function NavBar({ dark }) {
                         onClick={() => {
                           router.push("/dashboard", { scroll: false });
                         }}
-                        src={session.user.image}
+                        src={
+                          session.user.image ||
+                          "https://source.boringavatars.com/marble/120/Maria%20Mitchell?colors=264653,2a9d8f,e9c46a,f4a261,e76f51"
+                        }
                         className="w-10 h-10"
-                        alt=""
+                        alt="Ir al perfil"
                       />
                     </div>
                     <button
@@ -182,14 +190,24 @@ function NavBar({ dark }) {
                     </button>
                   </div>
                 ) : (
-                  <button
-                    onClick={async () => {
-                      signIn();
-                    }}
-                    className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                  >
-                    Crear cuenta
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={async () => {
+                        router.push("/register");
+                      }}
+                      className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    >
+                      Registarse
+                    </button>
+                    <button
+                      onClick={async () => {
+                        router.push("/login");
+                      }}
+                      className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    >
+                      Iniciar sesion
+                    </button>
+                  </div>
                 )}
               </li>
             </ul>

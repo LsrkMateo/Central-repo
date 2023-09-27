@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useSession } from "next-auth/react";
-
+import UserInfo from "../../components/UserInfo";
 function Page() {
   const { data: session } = useSession();
 
@@ -15,11 +15,14 @@ function Page() {
           >
             Hola {session.user.name}!
           </div>
-          Bienvenido, este es la pagina de tu perfil, accede a ella cada vez que
-          quieras acceder o configurar detalles de tu cuenta. <br /> Recuerda
-          que este proyecto no es mas que una recopilacion de distintos
-          proyectos, por lo que sientete libre de juzgar y compartir tus
-          opiniones!
+          <div>
+            Bienvenido, este es la pagina de tu perfil, accede a ella cada vez
+            que quieras acceder o configurar detalles de tu cuenta. <br />{" "}
+            Recuerda que este proyecto no es mas que una recopilacion de
+            distintos proyectos, por lo que sientete libre de juzgar y compartir
+            tus opiniones!
+          </div>
+          <UserInfo />
         </div>
       ) : (
         <div>No hay sesión activa.</div>
