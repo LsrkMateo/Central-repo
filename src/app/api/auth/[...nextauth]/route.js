@@ -1,8 +1,9 @@
-import { connectMongoDB } from "../../../../../lib/mongodb"
+import { connectMongoDB } from "../../../../../lib/mongodb";
 import User from "../../../../../models/user";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
   providers: [
@@ -33,7 +34,12 @@ export const authOptions = {
         }
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
   ],
+
   session: {
     strategy: "jwt",
   },
