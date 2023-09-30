@@ -78,6 +78,24 @@ export default function LoginForm() {
           >
             Login with Google
           </button>
+          <button
+            onClick={async () => {
+              try {
+                const res = await signIn("github");
+                if (!res.error) {
+                  // La autenticación con Google fue exitosa
+                  router.replace("/dashboard"); // Redirige a la página de dashboard
+                } else {
+                  setError("Failed to sign in with Google");
+                }
+              } catch (error) {
+                console.error(error);
+              }
+            }}
+            className="bg-green-600 text-white font-bold cursor-pointer px-6 py-2"
+          >
+            Login with Github
+          </button>
 
           {error && (
             <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
