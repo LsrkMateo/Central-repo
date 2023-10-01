@@ -15,6 +15,11 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!name || !email || !password) {
+      setError("All fields are necessary.");
+      return;
+    }
+
     try {
       const resUserExists = await fetch("api/userExists", {
         method: "POST",
@@ -25,6 +30,11 @@ export default function RegisterForm() {
       });
 
       const { user } = await resUserExists.json();
+
+      if (user) {
+        setError("User already exists.");
+        return;
+      }
 
       const res = await fetch("api/register", {
         method: "POST",
@@ -84,10 +94,7 @@ export default function RegisterForm() {
                 setError("All fields are necessary.");
                 return;
               }
-              if (user) {
-                setError("User already exists.");
-                return;
-              }
+              
             }}
           >
             Register
