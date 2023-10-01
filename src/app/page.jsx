@@ -49,10 +49,10 @@ function Page() {
     "https://api.github.com/repos/michalsnik/aos",
     "https://api.github.com/repos/ubuntu/ubuntu-make",
     "https://api.github.com/repos/Nikhilthadani/nextjs-13-full-stack-blog",
+    "https://api.github.com/repos/LsrkMateo/next-js-mongodb",
   ];
 
   const [repoData, setRepoData] = useState([]);
-
 
   const getRepo = async (url) => {
     try {
