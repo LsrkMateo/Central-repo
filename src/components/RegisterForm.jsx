@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { Toaster, toast } from "sonner";
 export default function RegisterForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,47 +17,49 @@ export default function RegisterForm() {
     e.preventDefault();
 
     if (!name || !email || !password) {
-      setError("All fields are necessary.");
+      setError("Todos los campos son necesarios");
+      toast.error("El registro del usuario falló, inténtalo de nuevo");
       return;
     }
 
     try {
-      const resUserExists = await fetch("api/userExists", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+      const [resUserExists, res] = await Promise.all([
+        fetch("api/userExists", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }),
+        fetch("api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+          }),
+        }),
+      ]);
 
       const { user } = await resUserExists.json();
+      const answer = await res.json();
 
       if (user) {
-        setError("User already exists.");
-        return;
-      }
-
-      const res = await fetch("api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      });
-
-      if (res.ok) {
+        setError("El usuario ya existe");
+        toast.error("El registro del usuario falló, inténtalo de nuevo");
+      } else if (answer.status == 400) {
+        setError(answer.message);
+        toast.error("El registro del usuario falló, inténtalo de nuevo");
+      } else {
         const form = e.target;
         form.reset();
         router.push("/");
-      } else {
-        console.log("User registration failed.");
       }
     } catch (error) {
-      console.log("Error during registration: ", error);
+      console.log("Error durante el registro: ", error);
     }
   };
 
@@ -94,7 +97,6 @@ export default function RegisterForm() {
                 setError("All fields are necessary.");
                 return;
               }
-              
             }}
           >
             Register
@@ -130,6 +132,7 @@ export default function RegisterForm() {
           </Link>
         </form>
       </div>
+      <Toaster richColors />
     </div>
   );
 }

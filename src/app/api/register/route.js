@@ -2,30 +2,32 @@ import { connectMongoDB } from "../../../../lib/mongodb";
 import User from "../../../../models/user";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { isValidEmail } from "../../../../utils/isValidEmail";
+
 export async function POST(req) {
+  const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   try {
-    const { name, email, password } = await req.json();
-    const hashedPassword = await bcrypt.hash(password, 10);
     await connectMongoDB();
-    await User.create({ name, email, password: hashedPassword });
-    
-    if (!email || !password || !name) {
+    const { name, email, password } = await req.json();
+
+    if (!emailRegex.test(email) || !name || !password) {
+      console.log("no listones");
       return NextResponse.json({
-        message: "no se han llenado todos los campos del registro",
+        message: "Datos de entrada inválidos",
         status: 400,
       });
-    }
+    } else {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await User.create({ name, email, password: hashedPassword });
 
-    if (!isValidEmail(email)) {
-      return NextResponse.json({ message: " incorrect email ", status: 400 });
+      return NextResponse.json(
+        { message: "Usuario registrado." },
+        { status: 201 }
+      );
     }
-
-    return NextResponse.json({ message: "User registered." }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
-      { message: "An error occurred while registering the user." },
-      { status: 500 }
+      { message: "Se produjo un error al registrar el usuario." },
+      { status: 400 }
     );
   }
 }
