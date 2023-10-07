@@ -10,6 +10,7 @@ export async function POST(req) {
     console.log("user: ", user);
     return NextResponse.json({ user });
   } catch (error) {
+    return NextResponse.json({ message: "not found" , status: 404 });
     console.log(error);
   }
 }

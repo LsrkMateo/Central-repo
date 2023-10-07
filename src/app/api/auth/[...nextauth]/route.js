@@ -41,10 +41,16 @@ export const authOptions = {
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET
-    })
+      clientSecret: process.env.GITHUB_SECRET,
+    }),
   ],
-
+  callbacks: {
+    session({ session, user }) {
+      session.user.stars =
+        user instanceof User ? user.stars : session.user.stars;
+      return session;
+    },
+  },
   session: {
     strategy: "jwt",
   },

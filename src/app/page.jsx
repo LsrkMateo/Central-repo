@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 import Card from "../components/Card";
 import { Toaster, toast } from "sonner";
 import {} from "react-icons/bi";
+import { useSession } from "next-auth/react";
+
 function Page() {
+  const [userInfor, setuserInfor] = useState("");
+  const { data: session } = useSession();
   const [filterBy, setFilterBy] = useState(""); // Estado para almacenar la opción de filtrado seleccionada
   const [searchText, setSearchText] = useState(""); // Estado para el texto de búsqueda
   const [filteredData, setFilteredData] = useState([]); // Estado para los datos filtrados
@@ -69,6 +73,7 @@ function Page() {
 
   useEffect(() => {
     linkArray.forEach(getRepo);
+    getUserInfo();
   }, []);
 
   useEffect(() => {
@@ -121,6 +126,36 @@ function Page() {
 
     filterData();
   }, [searchText, filterBy, repoData, sortBy, propertiesFilter]);
+
+  const getUserInfo = async () => {
+    try {
+      // Obtener el correo electrónico del usuario de la sesión
+      const email = "carla@gmail.com"; //session.user.email Asegúrate de tener acceso a la variable de sesión
+
+      // Realizar una solicitud GET a la ruta que devuelve la información del usuario
+      const response = await fetch(`api/getUserInfo/carla@gmail.com`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        // Si la solicitud se realiza con éxito (código 200), parsea la respuesta JSON
+        const { user } = await response.json();
+
+        // Aquí puedes utilizar la información del usuario, por ejemplo, para mostrarla en la página
+        console.log("Información del usuario:", user);
+        setuserInfor(user);
+      } else {
+        // Si la solicitud no se realiza con éxito, maneja el error de acuerdo a tus necesidades
+        console.error("Error al obtener la información del usuario");
+      }
+    } catch (error) {
+      // Maneja los errores de la solicitud
+      console.error("Error durante la solicitud GET:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen p-8 bg-gray-100 dark:bg-gray-950">
@@ -215,6 +250,13 @@ function Page() {
       </div>
       {/*---*/}
       {/* Grid de tarjetas */}
+      <div>
+        Bienvenido/a <span className="font-bold">{userInfor.name}</span>
+      </div>
+      <div>
+        Le has dado estrellas a{" "}
+        <span className="font-bold">{userInfor.stars}</span> repositorios
+      </div>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 hover:cursor-pointer">
         {filteredData.length > 0 ? (
           filteredData.map((data, index) => (
