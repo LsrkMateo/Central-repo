@@ -34,7 +34,7 @@ function NavBar({ dark }) {
     <nav className="dark:bg-gray-950 bg-slate-200">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 relative">
         <button onClick={() => handleNavigation("/")}>
-          <h1 className="self-center text-2xl font-semibold whitespace-nowrap">
+          <h1 className="dark:text-white self-center text-2xl font-semibold whitespace-nowrap">
             Repositorio de proyectos
           </h1>
         </button>
@@ -50,7 +50,7 @@ function NavBar({ dark }) {
           >
             x
           </button>
-          <ul className="space-y-4 mt-6">
+          <ul className="space-y-4 mt-6 dark:text-white">
             <li className="flex items-center">
               <button
                 onClick={() => handleNavigation("/documentacion")}
