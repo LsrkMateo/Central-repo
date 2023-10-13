@@ -21,30 +21,25 @@ export async function GET(req, { params }) {
   }
 }
 
-// export async function PUT(req, { params }) {
-//   try {
-//     await connectMongoDB();
-//     const starred = await req.json();
+export async function PUT(req, { params }) {
+  try {
+    await connectMongoDB();
+    const email = params.email;
+    const user = await User.findOne({ email }).select("name stars");
 
-//     const updatedUser = await User.findOneAndUpdate(
-//       params.email,
-//       { $set: { stars: starred } },
-//       { new: true }
-//     );
+    // Incrementar el valor de user.stars en 1
+    user.stars += 1;
 
-//     if (!updatedUser) {
-//       return NextResponse.json({
-//         message: "Usuario no encontrado",
-//         status: 404,
-//       });
-//     }
+    // Guardar el cambio en la base de datos
+    await user.save();
 
-//     return NextResponse.json({ user: updatedUser });
-//   } catch (error) {
-//     console.error(error);
-//     return NextResponse.json({
-//       message: "Error al actualizar el usuario",
-//       status: 500,
-//     });
-//   }
-// }
+    console.log(user.stars);
+    return NextResponse.json({ user });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({
+      message: "Error al obtener el usuario",
+      status: 500,
+    });
+  }
+}
