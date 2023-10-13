@@ -219,7 +219,7 @@ function Page() {
         {/*---*/}
       </div>
       {/*barra de busqueda*/}
-      <div className="relative w-full my-4">
+      <div className=" w-full my-4">
         <input
           type="text"
           placeholder="Buscar..."
@@ -227,26 +227,9 @@ function Page() {
           onChange={(e) => setSearchText(e.target.value)}
           className="w-full py-2 pl-10 pr-4 rounded-full border border-gray-300 focus:outline-none focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
         />
-        <svg
-          className="absolute left-3 top-3 h-5 w-5 text-gray-400"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M13.293 14.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 1.414l3 3a1 1 0 000 1.414z"
-            clipRule="evenodd"
-          />
-          <path
-            fillRule="evenodd"
-            d="M9 17a8 8 0 100-16 8 8 0 000 16z"
-            clipRule="evenodd"
-          />
-        </svg>
       </div>
       {/*---*/}
-      <div className="mb-3">
+      <div className="mb-3 dark:text-white">
         Repositorios con estrellas:
         {!session ? (
           <span className="px-4"> cargando sesion... </span>

@@ -24,14 +24,14 @@ export default function RegisterForm() {
 
     try {
       const [resUserExists, res] = await Promise.all([
-        fetch("api/userExists", {
+        fetch("api/auth/userExists", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ email }),
         }),
-        fetch("api/register", {
+        fetch("api/auth/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
