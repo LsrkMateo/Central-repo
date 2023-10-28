@@ -4,6 +4,7 @@ import {
   BiExit,
   BiBookOpen,
   BiVideo,
+  BiBox,
   BiBook,
   BiUser,
   BiSolidUserAccount,
@@ -98,6 +99,18 @@ function NavBar({ dark }) {
             </li>
             <hr />
             <li className="flex items-center">
+              <button
+                className="flex items-center"
+                onClick={() => handleNavigation("/createRepo")}
+              >
+                <span className="mr-2">
+                  <BiBox />
+                </span>
+                <h1>Crear repositorio</h1>
+              </button>
+            </li>
+            <hr />
+            <li className="flex items-center">
               {session?.user ? (
                 <button
                   onClick={() => handleNavigation("/dashboard")}
@@ -128,7 +141,7 @@ function NavBar({ dark }) {
               alt="Avatar"
             />
           ) : (
-            <BiUser className="w-10 h-10" />
+            <BiUser className="dark:text-white w-10 h-10" />
           )}
         </div>
       </div>

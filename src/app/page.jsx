@@ -131,14 +131,14 @@ function Page() {
           "Content-Type": "application/json",
         },
       });
-
+  
       if (response.status === 200) {
         // Si la solicitud se realiza con éxito (código 200), parsea la respuesta JSON
         const { user } = await response.json();
-
+  
         // Aquí puedes utilizar la información del usuario, por ejemplo, para mostrarla en la página
+        await setuserInfor(user); // Corregido el nombre de la función
         console.log("Información del usuario:", user);
-        setuserInfor(user);
       } else {
         // Si la solicitud no se realiza con éxito, maneja el error de acuerdo a tus necesidades
         console.error("Error al obtener la información del usuario");
@@ -148,6 +148,7 @@ function Page() {
       console.error("Error durante la solicitud GET:", error);
     }
   };
+  
   useEffect(() => {
     // Llamar a getUserInfo solo si la sesión está disponible
     if (session) {

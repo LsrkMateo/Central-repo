@@ -1,9 +1,8 @@
 "use client";
-
 import Link from "next/link";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; // Cambio aquí: 'next/navigation' a 'next/router'
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -14,6 +13,7 @@ export default function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Agregar lógica para la autenticación por correo y contraseña aquí si es necesario
   };
 
   return (
@@ -49,9 +49,9 @@ export default function LoginForm() {
                 if (res.error) {
                   setError("Invalid Credentials");
                   return;
+                } else {
+                  router.replace("/dashboard");
                 }
-
-                router.replace("dashboard");
               } catch (error) {
                 console.log(error);
               }
@@ -81,7 +81,7 @@ export default function LoginForm() {
           <button
             onClick={async () => {
               try {
-                const res = await signIn("github"); // Asumiendo que signIn es una función válida para autenticar con GitHub
+                const res = await signIn("github");
                 if (!res.error) {
                   // La autenticación con GitHub fue exitosa
                   router.replace("/dashboard"); // Redirige a la página de dashboard
