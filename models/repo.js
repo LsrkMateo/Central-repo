@@ -10,7 +10,7 @@ const repoSchema = new Schema(
     author: {
       type: String,
       required: true,
-      unique: true,
+      unique: false,
     },
     description: {
       type: String,

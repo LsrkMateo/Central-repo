@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { format } from "date-fns";
 import { FaStar } from "react-icons/fa"; // Importa el icono de una estrella
 import { useSession } from "next-auth/react";
-import { id } from "date-fns/locale";
+import { setUserInfo } from "../../utils/userCrud";
 function Card({ data, handleCardClick }) {
   const { data: session } = useSession();
   const [starred, setStarred] = useState(false); // Estado para controlar el cambio de color de la estrella
@@ -10,34 +10,9 @@ function Card({ data, handleCardClick }) {
   const handleStarClick = (e) => {
     e.stopPropagation(); // Evita que el click en la estrella se propague al botón
     setStarred(!starred); // Cambia el estado de la estrella al hacer clic
-    if (session) {
-      addStars(session.user.email);
-    }
-  };
-  const addStars = async (email) => {
-    try {
-      const response = await fetch(`api/getUserInfo/${email}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.status === 200) {
-        // Si la solicitud se realiza con éxito (código 200), parsea la respuesta JSON
-        const { user } = await response.json();
-
-        // Aquí puedes utilizar la información del usuario, por ejemplo, para mostrarla en la página
-        console.log("Información del usuario:", user);
-        setuserInfor(user);
-      } else {
-        // Si la solicitud no se realiza con éxito, maneja el error de acuerdo a tus necesidades
-        console.error("Error al obtener la información del usuario");
-      }
-    } catch (error) {
-      // Maneja los errores de la solicitud
-      console.error("Error durante la solicitud GET:", error);
-    }
+    // if (session) {
+    //   setUserInfo(session.user.email)
+    // }
   };
 
   return (

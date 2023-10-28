@@ -5,10 +5,10 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   try {
     await connectMongoDB();
-    const { name, author } = await req.json();
+    const { name, description, author } = await req.json();
     const repo = await Repo.findOne({ name }).select("_id");
     console.log("Repo: ", repo);
-    await Repo.create({ name, author });
+    await Repo.create({ name, description, author });
     return NextResponse.json(
       { message: "Usuario registrado." },
       { status: 201 }

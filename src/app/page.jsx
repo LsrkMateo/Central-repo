@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Card from "../components/Card";
 import { Toaster, toast } from "sonner";
 import { useSession } from "next-auth/react";
+import { getUserInfo } from "../../utils/userCrud";
 function Page() {
   const { data: session } = useSession();
   const [userInfor, setuserInfor] = useState("");
@@ -123,36 +124,17 @@ function Page() {
     filterData();
   }, [searchText, filterBy, repoData, sortBy, propertiesFilter]);
 
-  const getUserInfo = async (email) => {
-    try {
-      const response = await fetch(`api/getUserInfo/${email}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      if (response.status === 200) {
-        // Si la solicitud se realiza con éxito (código 200), parsea la respuesta JSON
-        const { user } = await response.json();
-  
-        // Aquí puedes utilizar la información del usuario, por ejemplo, para mostrarla en la página
-        await setuserInfor(user); // Corregido el nombre de la función
-        console.log("Información del usuario:", user);
-      } else {
-        // Si la solicitud no se realiza con éxito, maneja el error de acuerdo a tus necesidades
-        console.error("Error al obtener la información del usuario");
-      }
-    } catch (error) {
-      // Maneja los errores de la solicitud
-      console.error("Error durante la solicitud GET:", error);
-    }
-  };
-  
   useEffect(() => {
-    // Llamar a getUserInfo solo si la sesión está disponible
     if (session) {
-      getUserInfo(session.user.email);
+      getUserInfo(session.user.email)
+        .then((user) => {
+          setuserInfor(user);
+          console.log("Datos del usuario:", user);
+        })
+        .catch((error) => {
+          // Maneja el error
+          console.error("Error al obtener los datos del usuario:", error);
+        });
     }
   }, [session]);
   return (

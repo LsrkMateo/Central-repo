@@ -14,13 +14,9 @@ import { useRouter } from "next/navigation";
 
 function NavBar({ dark }) {
   const { data: session } = useSession();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const router = useRouter();
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -97,18 +93,23 @@ function NavBar({ dark }) {
                 <h1>Contacto</h1>
               </button>
             </li>
-            <hr />
-            <li className="flex items-center">
-              <button
-                className="flex items-center"
-                onClick={() => handleNavigation("/createRepo")}
-              >
-                <span className="mr-2">
-                  <BiBox />
-                </span>
-                <h1>Crear repositorio</h1>
-              </button>
-            </li>
+
+            {session ? (
+              <div>
+                <hr />
+                <li className="flex items-center mt-3">
+                  <button
+                    className="flex items-center"
+                    onClick={() => handleNavigation("/proyectos")}
+                  >
+                    <span className="mr-2">
+                      <BiBox />
+                    </span>
+                    <h1>Proyectos</h1>
+                  </button>
+                </li>
+              </div>
+            ) : null}
             <hr />
             <li className="flex items-center">
               {session?.user ? (
