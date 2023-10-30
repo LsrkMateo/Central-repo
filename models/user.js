@@ -15,10 +15,15 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    proyects: {
+      type: Array,
+      default: [],
+    },
     stars: {
       type: Number,
       default: 0,
     },
+    
   },
   { timestamps: true }
 );

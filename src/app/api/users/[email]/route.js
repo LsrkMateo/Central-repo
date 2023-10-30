@@ -6,12 +6,14 @@ export async function GET(req, { params }) {
   try {
     await connectMongoDB();
     const email = params.email;
-    const user = await User.findOne({ email }).select("name email stars");
+    const user = await User.findOne({ email }).select(
+      "name email stars proyects"
+    );
 
     if (!user) {
       return NextResponse.json({
         message: "Usuario no encontrado",
-        status: 404,  // Cambiado a 404 para indicar que el recurso no se encontró
+        status: 404, // Cambiado a 404 para indicar que el recurso no se encontró
       });
     }
 
@@ -24,5 +26,3 @@ export async function GET(req, { params }) {
     });
   }
 }
-
-
