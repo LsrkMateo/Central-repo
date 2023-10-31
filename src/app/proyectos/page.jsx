@@ -7,7 +7,9 @@ function Page() {
   const router = useRouter();
   const { data: session } = useSession();
   const [userInfo, setuserInfor] = useState();
-
+  const handleCardClick = (id) => {
+    router.push(`proyectos/${id}`);
+  };
   useEffect(() => {
     if (session) {
       getUserInfo(session.user.email)
@@ -47,25 +49,43 @@ function Page() {
         {userInfo && userInfo.proyects ? (
           <div>
             {userInfo.proyects.map((proyect, index) => (
-              <div className="dark:bg-gray-800 rounded-lg p-4 mt-4" key={index}>
-                <div
-                  className="border border-gray-300 p-4 rounded-lg"
-                >
+              <div
+                className="dark:bg-gray-800 rounded-lg p-4 mt-4"
+                key={index}
+                onClick={() => {
+                  handleCardClick(proyect.resProyect.repo._id);
+                }}
+              >
+                <div className="border border-gray-300 p-4 rounded-lg">
                   <h2 className="text-2xl font-semibold dark:text-white mb-2">
-                    {proyect.resProyect.repo.name}
+                    {proyect.resProyect &&
+                    proyect.resProyect.repo &&
+                    proyect.resProyect.repo.name
+                      ? proyect.resProyect.repo.name
+                      : "Nombre no disponible"}
                   </h2>
                   <p className="text-gray-600 dark:text-gray-400 mb-2">
-                    Descripcion: {proyect.resProyect.repo.description}
+                    Descripcion:{" "}
+                    {proyect.resProyect &&
+                    proyect.resProyect.repo &&
+                    proyect.resProyect.repo.description
+                      ? proyect.resProyect.repo.description
+                      : "Descripción no disponible"}
                   </p>
                   <p className="text-yellow-500 dark:text-yellow-400">
-                    Stars: {proyect.resProyect.repo.repoStars}
+                    Estrellas:{" "}
+                    {proyect.resProyect &&
+                    proyect.resProyect.repo &&
+                    proyect.resProyect.repo.stars
+                      ? proyect.resProyect.repo.stars
+                      : "Sin estrellas"}
                   </p>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <p className="dark:text-white">No hay proyectos disponibles.</p>
+          <p className="dark:text-white">Cargando...</p>
         )}
       </div>
     </div>
