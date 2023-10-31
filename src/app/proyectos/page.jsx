@@ -47,9 +47,8 @@ function Page() {
         {userInfo && userInfo.proyects ? (
           <div>
             {userInfo.proyects.map((proyect, index) => (
-              <div className="dark:bg-gray-800 rounded-lg p-4 mt-4">
+              <div className="dark:bg-gray-800 rounded-lg p-4 mt-4" key={index}>
                 <div
-                  key={index}
                   className="border border-gray-300 p-4 rounded-lg"
                 >
                   <h2 className="text-2xl font-semibold dark:text-white mb-2">
