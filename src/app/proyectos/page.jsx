@@ -53,32 +53,21 @@ function Page() {
                 className="dark:bg-gray-800 rounded-lg p-4 mt-4 w-full flex"
                 key={index}
                 onClick={() => {
-                  handleCardClick(proyect.resProyect.repo._id);
+                  handleCardClick(proyect._id);
                 }}
               >
                 <div className="border w-full text-left border-gray-300 p-4 rounded-lg">
                   <h2 className="text-2xl font-semibold dark:text-white mb-2">
-                    {proyect.resProyect &&
-                    proyect.resProyect.repo &&
-                    proyect.resProyect.repo.name
-                      ? proyect.resProyect.repo.name
-                      : "Nombre no disponible"}
+                    {proyect ? proyect.name : "Nombre no disponible"}
                   </h2>
                   <p className="text-gray-600 dark:text-gray-400 mb-2">
                     Descripcion:{" "}
-                    {proyect.resProyect &&
-                    proyect.resProyect.repo &&
-                    proyect.resProyect.repo.description
-                      ? proyect.resProyect.repo.description
+                    {proyect
+                      ? proyect.description
                       : "Descripción no disponible"}
                   </p>
                   <p className="text-yellow-500 dark:text-yellow-400">
-                    Estrellas:{" "}
-                    {proyect.resProyect &&
-                    proyect.resProyect.repo &&
-                    proyect.resProyect.repo.stars
-                      ? proyect.resProyect.repo.stars
-                      : "Sin estrellas"}
+                    Estrellas: {proyect ?  proyect.repoStars : "Sin estrellas"}
                   </p>
                 </div>
               </button>

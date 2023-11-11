@@ -47,12 +47,13 @@ function Page() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-800">
       {repoData ? (
         <div className="bg-white dark:bg-gray-900 w-full h-screen m-5 rounded-lg p-8 shadow-lg">
-          <div className="flex justify-between">
+          <div className="mb-4 flex justify-between">
             <h2 className="text-3xl font-semibold dark:text-white mb-4">
               {repoData.repo && repoData.repo.name
                 ? repoData.repo.name
                 : "Nombre no disponible"}
             </h2>
+
             <button
               onClick={() => {
                 handleEdit();
@@ -65,7 +66,8 @@ function Page() {
               </span>
             </button>
           </div>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <hr />
+          <p className="mt-4 text-gray-600 dark:text-gray-400 mb-4">
             {repoData.repo && repoData.repo.description
               ? repoData.repo.description
               : "Descripción no disponible"}
@@ -135,5 +137,6 @@ function Page() {
     </div>
   );
 }
+
 
 export default Page;

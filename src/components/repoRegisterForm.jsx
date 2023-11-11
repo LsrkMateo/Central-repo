@@ -27,17 +27,9 @@ export default function RepoRegisterForm() {
       const resProyect = await proyect.json();
       console.log("resProyect", resProyect);
 
-      fetch(`/api/users/saveProyect/${session.user.email}`, {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ resProyect }),
-      });
-
-      handleNavigation()
+      handleNavigation();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
   return (

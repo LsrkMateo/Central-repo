@@ -29,7 +29,11 @@ export async function DELETE(req, { params }) {
 
     try {
       const index = user.proyects.findIndex(
-        (proyecto) => proyecto.resProyect.repo._id === id
+        (proyecto) => {
+          console.log('asdas',proyecto)
+          console.log(id)
+          proyecto._id === id
+        }
       );
       if (index !== -1) {
         // Elimina el proyecto encontrando utilizando splice
