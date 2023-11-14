@@ -1,15 +1,21 @@
-
 import dbConnect from '../../../../../../utils/dbConnect';
 import Repo from "../../../../../../models/repo";
+import { connectMongoDB } from '../../../../../../lib/mongodb';
+import mongoose from 'mongoose';
 import User from "../../../../../../models/user";
 import { NextResponse } from "next/server";
+
 export async function GET(req, { params }) {
   try {
     await dbConnect();
 
-    const id = await params.repo_id;
+    const id = params.repo_id;
     const repo = await Repo.findById(id);
-    console.log(repo);
+
+    if (!repo) {
+      return NextResponse.json({ message: "No se encontró el repositorio con el ID proporcionado." }, 404);
+    }
+
     return NextResponse.json({ repo });
   } catch (error) {
     console.error(error);
@@ -22,20 +28,53 @@ export async function GET(req, { params }) {
 
 export async function DELETE(req, { params }) {
   try {
-    await dbConnect();
+    await dbConnect(); // Establece una conexión a MongoDB
 
-    const id = await params.repo_id;
-    const repo = await Repo.findByIdAndRemove(params.repo_id);
-    console.log(repo);
-    return NextResponse.json({ repo });
-  } catch (error) {
-    console.error(error);
+    const { user_name } = await req.json();
+    const proyect_id = params.repo_id;
+
+    console.log('data:', user_name); // mateo
+    console.log('proyect id:', proyect_id); // 6553f38288431a3737af8658
+
+    // Encuentra el usuario
+    const user = await User.findOne({ name: user_name });
+
+    if (!user) {
+      return NextResponse.json(
+        { message: "No se encontró el usuario para actualizar." },
+        404
+      );
+    }
+
+    // Encuentra el índice del proyecto en el array de proyectos del usuario
+    const projectIndex = user.proyects.findIndex(project => project._id.toString() === proyect_id);
+
+    // Verifica si el proyecto existe en el array de proyectos del usuario
+    if (projectIndex !== -1) {
+      // Utiliza splice para eliminar el proyecto del array
+      user.proyects.splice(projectIndex, 1);
+
+      // Guarda los cambios en la base de datos
+      await user.save();
+    }
+
+    Repo.findByIdAndDelete(proyect_id)
+    
     return NextResponse.json({
-      message: "Error al obtener el proyecto",
-      status: 500,
+      message: "El repositorio y el usuario han sido actualizados con éxito.",
     });
+
+  } catch (error) {
+    // Maneja los errores apropiadamente, ya sea registrándolos o retornando una respuesta de error
+    console.error(error);
+    return NextResponse.json(
+      { message: "Se produjo un error al actualizar el repositorio y el usuario." },
+      500
+    );
   }
 }
+
+
 
 export async function PUT(req, { params }) {
   try {

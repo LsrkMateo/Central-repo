@@ -25,7 +25,6 @@ function page() {
     if (!name || !description) {
       setError("Todos los campos son nescesarios");
     } else {
-      
       //actualiza desde repos
 
       await fetch(`../../api/repos/getRepo/${proyect_id}`, {
@@ -56,22 +55,6 @@ function page() {
             );
             if (response.ok) {
               toast("Repositorio eliminado de la base de datos");
-            }
-          } catch (error) {
-            console.log(error);
-          }
-          try {
-            const response = await fetch(
-              `/api/users/saveProyect/${session.user.email}`,
-              {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(params.proyect_id),
-              }
-            );
-            if (response.ok) {
-              toast("Repositorio eliminado del usuario");
-              router.back();
             }
           } catch (error) {
             console.log(error);

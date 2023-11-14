@@ -92,26 +92,13 @@ function Page() {
                             {
                               method: "DELETE",
                               headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({
+                                user_name: session.user.name,
+                              }),
                             }
                           );
                           if (response.ok) {
                             toast("Repositorio eliminado de la base de datos");
-                          }
-                        } catch (error) {
-                          console.log(error);
-                        }
-                        try {
-                          const response = await fetch(
-                            `../api/users/saveProyect/${session.user.email}`,
-                            {
-                              method: "DELETE",
-                              headers: { "Content-Type": "application/json" },
-                              body: JSON.stringify(params.proyect_id),
-                            }
-                          );
-                          if (response.ok) {
-                            toast("Repositorio eliminado del usuario");
-                            router.back();
                           }
                         } catch (error) {
                           console.log(error);
@@ -137,6 +124,5 @@ function Page() {
     </div>
   );
 }
-
 
 export default Page;
