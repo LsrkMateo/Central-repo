@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { Toaster, toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-function page() {
+function Page() {
   const { data: session } = useSession();
   const params = useParams();
   const [description, setDescription] = useState("");
@@ -51,6 +51,9 @@ function page() {
               {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  user_name: session.user.name,
+                }),
               }
             );
             if (response.ok) {
