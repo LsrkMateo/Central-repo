@@ -9,6 +9,7 @@ import {
   BiUser,
   BiSolidUserAccount,
   BiSolidContact,
+  BiWrench,
 } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 
@@ -128,8 +129,21 @@ function NavBar({ dark }) {
                 </button>
               )}
             </li>
+            <hr />
+            <li className="flex items-center">
+              <button
+                onClick={() => handleNavigation("/config")}
+                className="flex items-center"
+              >
+                <span className="mr-2">
+                  <BiWrench />
+                </span>
+                <h1>Ajustes</h1>
+              </button>
+            </li>
           </ul>
         </div>
+
         {/* Botón de usuario o icono */}
         <div className="cursor-pointer" onClick={toggleSidebar}>
           {session?.user ? (

@@ -98,7 +98,7 @@ function Page() {
                             }
                           );
                           if (response.ok) {
-                            toast("Repositorio eliminado de la base de datos");
+                            router.back()
                           }
                         } catch (error) {
                           console.log(error);

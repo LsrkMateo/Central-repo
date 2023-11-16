@@ -27,7 +27,7 @@ function Page() {
     } else {
       //actualiza desde repos
 
-      await fetch(`../../api/repos/getRepo/${proyect_id}`, {
+      const response = await fetch(`../../api/repos/getRepo/${proyect_id}`, {
         method: "put",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -37,6 +37,9 @@ function Page() {
         }),
       });
       setError("");
+      if (response.ok) {
+        router.push(`/proyectos/${[proyect_id]}`)
+      }
     }
     console.log(name, description);
   };
@@ -57,7 +60,7 @@ function Page() {
               }
             );
             if (response.ok) {
-              toast("Repositorio eliminado de la base de datos");
+              router.back();
             }
           } catch (error) {
             console.log(error);
