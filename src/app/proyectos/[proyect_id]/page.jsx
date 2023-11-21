@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { BiXCircle, BiSolidPen } from "react-icons/bi";
+import { BiXCircle, BiSolidPen, BiSolidArrowToLeft } from "react-icons/bi";
 import { Toaster, toast } from "sonner";
 import { useSession } from "next-auth/react";
 function Page() {
@@ -54,17 +54,30 @@ function Page() {
                 : "Nombre no disponible"}
             </h2>
 
-            <button
-              onClick={() => {
-                handleEdit();
-              }}
-              className="flex justify-between items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded"
-            >
-              <p className="text-left">Editar repositorio</p>
-              <span className="flex items-center">
-                <BiSolidPen />
-              </span>
-            </button>
+            <div className="flex gap-6">
+              <button
+                onClick={() => {
+                  handleEdit();
+                }}
+                className="flex justify-between items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded"
+              >
+                <p className="text-left">Editar repositorio</p>
+                <span className="flex items-center">
+                  <BiSolidPen />
+                </span>
+              </button>
+              <button
+                onClick={() => {
+                  router.push('/proyectos');
+                }}
+                className="flex justify-between items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded"
+              >
+                <p className="text-left">Volver</p>
+                <span className="flex items-center">
+                  <BiSolidArrowToLeft />
+                </span>
+              </button>
+            </div>
           </div>
           <hr />
           <p className="mt-4 text-gray-600 dark:text-gray-400 mb-4">
@@ -98,7 +111,7 @@ function Page() {
                             }
                           );
                           if (response.ok) {
-                            router.back()
+                            router.back();
                           }
                         } catch (error) {
                           console.log(error);

@@ -5,7 +5,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
+  api_key: process.env.API_KEY_CLD,
   api_secret: process.env.API_SECRET
 });
 export async function POST(request) {
@@ -23,13 +23,14 @@ export async function POST(request) {
       cloudinary.uploader
         .upload_stream({}, (err, result) => {
           if (err) {
+            console.error("Error al subir la imagen a Cloudinary:", err);
             reject(err);
           }
           resolve(result);
         })
         .end(buffer);
     });
-  
+
 
     return NextResponse.json({
       message: "imagen subida",

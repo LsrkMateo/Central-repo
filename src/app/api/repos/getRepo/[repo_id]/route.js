@@ -1,7 +1,5 @@
-import dbConnect from '../../../../../../utils/dbConnect';
+import dbConnect from '../../../../../../config/dbConnect'
 import Repo from "../../../../../../models/repo";
-import { connectMongoDB } from '../../../../../../lib/mongodb';
-import mongoose from 'mongoose';
 import User from "../../../../../../models/user";
 import { NextResponse } from "next/server";
 

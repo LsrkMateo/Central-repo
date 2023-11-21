@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { getUserInfo } from "../../../utils/userCrud";
+import ProyectCard from "../../components/proyectCard";
 function Page() {
   const router = useRouter();
   const { data: session } = useSession();
@@ -47,30 +48,19 @@ function Page() {
 
       <div>
         {userInfo && userInfo.proyects ? (
-          <div>
+          <div className="grid grid-cols-3 gap-5">
             {userInfo.proyects.map((proyect, index) => (
-              <button
-                className="dark:bg-gray-800 rounded-lg p-4 mt-4 w-full flex"
+              <ProyectCard
+                proyectId={proyect._id}
                 key={index}
-                onClick={() => {
-                  handleCardClick(proyect._id);
-                }}
-              >
-                <div className="border w-full text-left border-gray-300 p-4 rounded-lg">
-                  <h2 className="text-2xl font-semibold dark:text-white mb-2">
-                    {proyect ? proyect.name : "Nombre no disponible"}
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400 mb-2">
-                    Descripcion:{" "}
-                    {proyect
-                      ? proyect.description
-                      : "Descripción no disponible"}
-                  </p>
-                  <p className="text-yellow-500 dark:text-yellow-400">
-                    Estrellas: {proyect ?  proyect.repoStars : "Sin estrellas"}
-                  </p>
-                </div>
-              </button>
+                image={proyect.image_url}
+                title={proyect ? proyect.name : "Nombre no disponible"}
+                description={
+                  proyect ? proyect.description : "Descripción no disponible"
+                }
+                tags={["prueba", "jaja ez"]}
+                stars={proyect ? proyect.repoStars : "Sin estrellas"}
+              />
             ))}
           </div>
         ) : (

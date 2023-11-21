@@ -15,6 +15,10 @@ const repoSchema = new Schema(
     description: {
       type: String,
     },
+    image_url: {
+      type: String,
+    },
+
     language: {
       type: String,
     },
