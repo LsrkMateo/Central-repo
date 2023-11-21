@@ -1,241 +1,218 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import Card from "../components/Card";
-import { Toaster, toast } from "sonner";
-import { useSession } from "next-auth/react";
-import { getUserInfo } from "../../utils/userCrud";
+import { useState, useRef } from "react";
+
 function Page() {
-  const { data: session } = useSession();
-  const [userInfor, setuserInfor] = useState("");
-  const [filterBy, setFilterBy] = useState(""); // Estado para almacenar la opción de filtrado seleccionada
-  const [searchText, setSearchText] = useState(""); // Estado para el texto de búsqueda
-  const [filteredData, setFilteredData] = useState([]); // Estado para los datos filtrados
-  const [sortBy, setSortBy] = useState(""); // Estado para controlar el orden de los datos
-  const [showProperties, setShowProperties] = useState(false); // Estado para mostrar/ocultar el submenú de Propiedades
-  const [propertiesFilter, setPropertiesFilter] = useState(""); // Estado para la opción seleccionada en el submenú de Propiedades
-  const [mensajeEnviado, setmensajeEnviado] = useState(false);
-  const handleFilterChange = (event) => {
-    const selectedFilter = event.target.value;
+  const [showDetails, setShowDetails] = useState(false);
+  const detailsRef = useRef(null);
 
-    if (selectedFilter === "propiedades") {
-      // Si se selecciona "Propiedades", muestra el submenú
-      setShowProperties(true);
-    } else {
-      // Si se selecciona otra opción, oculta el submenú y limpia el filtro de Propiedades
-      setShowProperties(false);
-      setPropertiesFilter("");
-    }
-
-    setFilterBy(selectedFilter);
-    setSearchText(""); // Limpia el texto de búsqueda al cambiar la opción de filtrado
-    setFilteredData([]); // Limpia los datos filtrados al cambiar la opción de filtrado
+  const handleLearnMoreClick = async () => {
+    await setShowDetails(true);
+    // Desplazar hacia la sección de detalles
+    detailsRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleSortChange = (event) => {
-    setSortBy(event.target.value);
-  };
-
-  const handlePropertiesFilterChange = (event) => {
-    setPropertiesFilter(event.target.value);
-  };
-
-  const router = useRouter();
-
-  const linkArray = [
-    "https://api.github.com/repos/LsrkMateo/Rick-and-morty-api",
-    "https://api.github.com/repos/getcursor/cursor",
-    "https://api.github.com/repos/nextauthjs/next-auth",
-    "https://api.github.com/repos/linuxmint/cinnamon",
-    "https://api.github.com/repos/michalsnik/aos",
-    "https://api.github.com/repos/ubuntu/ubuntu-make",
-    "https://api.github.com/repos/Nikhilthadani/nextjs-13-full-stack-blog",
-    "https://api.github.com/repos/LsrkMateo/next-js-mongodb",
-  ];
-
-  const [repoData, setRepoData] = useState([]);
-
-  const getRepo = async (url) => {
-    try {
-      const response = await axios.get(url);
-      setRepoData((prevData) => [...prevData, response.data]);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    linkArray.forEach(getRepo);
-  }, []);
-  const handleCardClick = (url) => {
-    router.push(`${url}`);
-  };
-
-  useEffect(() => {
-    const filterData = () => {
-      let filtered = [...repoData];
-
-      if (filterBy === "nombre") {
-        // Filtra por nombre
-        filtered = filtered.filter((data) =>
-          data.name.toLowerCase().includes(searchText.toLowerCase())
-        );
-      } else if (filterBy === "autor") {
-        // Filtra por autor
-        filtered = filtered.filter((data) =>
-          data.owner.login.toLowerCase().includes(searchText.toLowerCase())
-        );
-      } else if (filterBy === "lenguaje") {
-        // Filtra por lenguaje, solo si data.language no es null
-        filtered = filtered.filter(
-          (data) =>
-            data.language &&
-            data.language.toLowerCase().includes(searchText.toLowerCase())
-        );
-        if (!mensajeEnviado) {
-          toast("No se incluiran proyectos sin lenguaje");
-        }
-        setmensajeEnviado(true);
-      }
-
-      // Filtra por Propiedades si se selecciona la opción correspondiente
-      if (filterBy === "propiedades" && propertiesFilter === "visibility") {
-        filtered = filtered.filter((data) => data.visibility === "public");
-      } else if (filterBy === "propiedades" && propertiesFilter === "private") {
-        filtered = filtered.filter((data) => data.visibility === "private");
-      }
-
-      // Ordena los datos según la opción de ordenamiento seleccionada
-      if (sortBy === "mas_visto") {
-        filtered.sort((a, b) => b.watchers - a.watchers); // De mayor a menor
-      } else if (sortBy === "menos_visto") {
-        filtered.sort((a, b) => a.watchers - b.watchers); // De menor a mayor
-      } else if (sortBy === "mas_reciente") {
-        filtered.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at)); // De más reciente a menos reciente
-      } else if (sortBy === "menos_reciente") {
-        filtered.sort((a, b) => new Date(a.pushed_at) - new Date(b.pushed_at)); // De menos reciente a más reciente
-      }
-
-      setFilteredData(filtered);
-    };
-
-    filterData();
-  }, [searchText, filterBy, repoData, sortBy, propertiesFilter]);
-
-  useEffect(() => {
-    if (session) {
-      getUserInfo(session.user.email)
-        .then((user) => {
-          setuserInfor(user);
-          console.log("Datos del usuario:", user);
-        })
-        .catch((error) => {
-          // Maneja el error
-          console.error("Error al obtener los datos del usuario:", error);
-        });
-    }
-  }, [session]);
   return (
-    <div className="min-h-screen p-8 bg-gray-100 dark:bg-gray-950">
-      {/* Sección en la parte superior */}
-      <div className="flex items-center justify-between flex-wrap my-0">
-        {/*opciones de filtracion*/}
-        <div className=" w-auto">
-          <label className="block text-gray-700 dark:text-white">
-            Filtrar por:
-          </label>
-          <select
-            value={filterBy}
-            onChange={handleFilterChange}
-            className="mx-0 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white py-2 pl-3 pr-10 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-indigo-500"
-          >
-            <option value="">Seleccione una opcion de filtracion</option>
-            <option value="nombre">Nombre</option>
-            <option value="autor">Autor</option>
-
-            <option value="lenguaje">Lenguaje</option>
-            <option value="propiedades">Propiedades</option>
-          </select>
-        </div>
-        {/*---*/}
-        {/* Submenú de Propiedades */}
-        {showProperties && (
-          <div className="">
-            <label className="block mt-3 text-gray-700 dark:text-white">
-              Filtrar por Propiedades:
-            </label>
-            <select
-              value={propertiesFilter}
-              onChange={handlePropertiesFilterChange}
-              className="mx-0 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white py-2 pl-3 pr-10 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-indigo-500"
-            >
-              <option value="">Seleccione una opción</option>
-              <option value="visibility">Visibility</option>
-              <option value="private">Private</option>
-            </select>
+    <div>
+      <section className="absolute left-0 w-full m-0 h-full bg-center bg-no-repeat bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/conference.jpg')] bg-gray-700 bg-blend-multiply">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-opacity-60 bg-gray-900">
+          <div className="text-center">
+            <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">
+              Explora tu potencial, <br /> mejora tus habilidades
+            </h1>
+            <p className="mb-8 m-4 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">
+              ProyectSharing es una red social basada en proyectos, donde podrás
+              interactuar con creadores y generar proyectos a gran escala
+            </p>
+            <div className="flex flex-col space-y-4 m-4 sm:flex-row sm:justify-center sm:space-y-0">
+              <a
+                href="/main"
+                className="sm:mx-10 inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
+              >
+               Comenzar
+                <svg
+                  className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 14 10"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M1 5h12m0 0L9 1m4 4L9 9"
+                  />
+                </svg>
+              </a>
+              <button
+                onClick={handleLearnMoreClick}
+                className="sm:mx-10 inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"
+              >
+                Aprender mas
+              </button>
+            </div>
           </div>
-        )}
-        {/*---*/}
-        {/* Opciones de ordenamiento */}
-        <div className="">
-          <label className="block mt-3 text-gray-700 dark:text-white">
-            Ordenar por:
-          </label>
-          <select
-            value={sortBy}
-            onChange={handleSortChange}
-            className="mx-0 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white py-2 pl-3 pr-10 rounded-full leading-tight focus:outline-none focus:bg-white focus:border-indigo-500"
-          >
-            <option value="">Seleccione una opción de ordenamiento</option>
-            <option value="mas_visto">Del más visto al menos visto</option>
-            <option value="menos_visto">Del menos visto al más visto</option>
-            <option value="mas_reciente">
-              Del más reciente al menos reciente
-            </option>
-            <option value="menos_reciente">
-              Del menos reciente al más reciente
-            </option>
-          </select>
         </div>
-        {/*---*/}
-      </div>
-      {/*barra de busqueda*/}
-      <div className=" w-full my-4">
-        <input
-          type="text"
-          placeholder="Buscar..."
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          className="w-full py-2 pl-10 pr-4 rounded-full border border-gray-300 focus:outline-none focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
-        />
-      </div>
-      {/*---*/}
-      <div className="mb-3 dark:text-white">
-        Repositorios con estrellas:
-        {!session ? (
-          <span className="px-4"> cargando sesion... </span>
-        ) : !userInfor ? (
-          <span className="px-4"> cargando usuario... </span>
-        ) : (
-          <span> {userInfor.stars}</span>
-        )}
-      </div>
-
-      {/* Grid de tarjetas */}
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 hover:cursor-pointer">
-        {filteredData.length > 0 ? (
-          filteredData.map((data, index) => (
-            <Card key={index} data={data} handleCardClick={handleCardClick} />
-          ))
-        ) : (
-          <div className={`text-center dark:text-white text-black`}>
-            No se encontraron resultados.
+      </section>
+      <section className="relatuve h-screen"></section>
+      {showDetails && (
+        <section className="bg-white dark:bg-gray-900 py-9" ref={detailsRef}>
+          <div className="pb-8 px-4 mx-auto max-w-screen-xl lg:pb-16 ">
+            <section className="bg-white dark:bg-gray-900 ">
+              <div className="pb-8 px-4 mx-auto max-w-screen-xl lg:pb-16 ">
+                <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12 mb-8">
+                  <a
+                    href="#"
+                    className="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-blue-400 mb-2"
+                  >
+                    <svg
+                      className="w-2.5 h-2.5 me-1.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 20 14"
+                    >
+                      <path d="M11 0H2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm8.585 1.189a.994.994 0 0 0-.9-.138l-2.965.983a1 1 0 0 0-.685.949v8a1 1 0 0 0 .675.946l2.965 1.02a1.013 1.013 0 0 0 1.032-.242A1 1 0 0 0 20 12V2a1 1 0 0 0-.415-.811Z" />
+                    </svg>
+                    Tutorial
+                  </a>
+                  <h1 className="text-gray-900 dark:text-white text-3xl md:text-5xl font-extrabold mb-2">
+                    How to quickly deploy a static website
+                  </h1>
+                  <p className="text-lg font-normal text-gray-500 dark:text-gray-400 mb-6">
+                    Static websites are now used to bootstrap lots of websites
+                    and are becoming the basis for a variety of tools that even
+                    influence both web designers and developers.
+                  </p>
+                  <a
+                    href="#"
+                    className="inline-flex justify-center items-center py-2.5 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
+                  >
+                    Read more
+                    <svg
+                      className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 14 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M1 5h12m0 0L9 1m4 4L9 9"
+                      />
+                    </svg>
+                  </a>
+                </div>
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
+                    <a
+                      href="#"
+                      className="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 mb-2"
+                    >
+                      <svg
+                        className="w-2.5 h-2.5 me-1.5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 18 18"
+                      >
+                        <path d="M17 11h-2.722L8 17.278a5.512 5.512 0 0 1-.9.722H17a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1ZM6 0H1a1 1 0 0 0-1 1v13.5a3.5 3.5 0 1 0 7 0V1a1 1 0 0 0-1-1ZM3.5 15.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2ZM16.132 4.9 12.6 1.368a1 1 0 0 0-1.414 0L9 3.55v9.9l7.132-7.132a1 1 0 0 0 0-1.418Z" />
+                      </svg>
+                      Design
+                    </a>
+                    <h2 className="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">
+                      Start with Flowbite Design System
+                    </h2>
+                    <p className="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">
+                      Static websites are now used to bootstrap lots of websites
+                      and are becoming the basis for a variety of tools that
+                      even influence both web designers and developers.
+                    </p>
+                    <a
+                      href="#"
+                      className="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center"
+                    >
+                      Read more
+                      <svg
+                        className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M1 5h12m0 0L9 1m4 4L9 9"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                  <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
+                    <a
+                      href="#"
+                      className="bg-purple-100 text-purple-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-purple-400 mb-2"
+                    >
+                      <svg
+                        className="w-2.5 h-2.5 me-1.5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 16"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 4 1 8l4 4m10-8 4 4-4 4M11 1 9 15"
+                        />
+                      </svg>
+                      Code
+                    </a>
+                    <h2 className="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">
+                      Best react libraries around the web
+                    </h2>
+                    <p className="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">
+                      Static websites are now used to bootstrap lots of websites
+                      and are becoming the basis for a variety of tools that
+                      even influence both web designers and developers.
+                    </p>
+                    <a
+                      href="#"
+                      className="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center"
+                    >
+                      Read more
+                      <svg
+                        className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M1 5h12m0 0L9 1m4 4L9 9"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
-        )}
-      </div>
-      <Toaster theme="system" richColors />
+        </section>
+      )}
     </div>
   );
 }

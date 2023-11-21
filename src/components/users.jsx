@@ -1,6 +1,5 @@
-"use client";
 import { useEffect, useState } from "react";
-function page() {
+function Users() {
   const [users, setUsers] = useState(null);
   const getUsers = async () => {
     try {
@@ -24,7 +23,8 @@ function page() {
   }, []);
 
   return (
-    <div className="min-h-screen p-8 bg-gray-100 dark:bg-gray-950">
+    <div className="min-h-screen pt-8 bg-gray-100 dark:bg-gray-950">
+      <h1 className="dark:text-white text-3xl font-bold"> Usuarios: </h1>
       <div className="dark:text-white">
         {users && users.users
           ? users.users.map((user) => user.name)
@@ -34,4 +34,4 @@ function page() {
   );
 }
 
-export default page;
+export default Users;
