@@ -7,8 +7,12 @@ const userSchema = new Schema(
       required: true,
       unique: true,
     },
+    avatar_url: {
+      type: String,
+    },
     email: {
       type: String,
+      unique: true,
       required: true,
     },
     password: {
@@ -23,7 +27,7 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
-    
+
   },
   { timestamps: true }
 );

@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <NavBar dark={darkMode} />
           <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-          <main className={`container mx-auto px-5 mt-4`}>
+          <main className={`container mx-auto `}>
             {/* <button
               onClick={toggleDarkModeFunc}
               className={`px-4 py-2 rounded ${

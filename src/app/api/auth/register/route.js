@@ -8,6 +8,7 @@ export async function POST(req) {
   try {
     await connectMongoDB();
     const { name, email, password } = await req.json();
+    const avatar_url = `https://robohash.org/${email}`
 
     if (!emailRegex.test(email) || !name || !password) {
       console.log("no listones");
@@ -17,7 +18,7 @@ export async function POST(req) {
       });
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
-      await User.create({ name, email, password: hashedPassword });
+      await User.create({ name, email, password: hashedPassword, avatar_url });
 
       return NextResponse.json(
         { message: "Usuario registrado." },

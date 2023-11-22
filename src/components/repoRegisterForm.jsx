@@ -86,49 +86,55 @@ export default function RepoRegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("author", session.user.name);
+    // Utilizar toast.promise para mostrar notificaciones durante la ejecución de la función
+    await toast.promise(
+      async () => {
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("description", description);
+        formData.append("author", session.user.name);
   
-      if (archivo ?? false) {
-        // Subir imagen
-        formData.append("file", archivo);
+        if (archivo ?? false) {
+          // Subir imagen
+          formData.append("file", archivo);
   
-        const uploadResponse = await fetch("/api/upload", {
+          const uploadResponse = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          });
+  
+          if (!uploadResponse.ok) {
+            throw new Error(`Error al subir la imagen: ${uploadResponse.statusText}`);
+          }
+  
+          const uploadResult = await uploadResponse.json();
+          toast.success(uploadResult.message);
+          toast.success('proyecto subido con exito!')
+          formData.append("imageLink", await uploadResult.url);
+        }
+  
+        // Hacer la solicitud POST a '../api/repos/uploadRepo'
+        const proyectResponse = await fetch("../api/repos/uploadRepo", {
           method: "POST",
           body: formData,
         });
   
-        if (!uploadResponse.ok) {
-          throw new Error(`Error al subir la imagen: ${uploadResponse.statusText}`);
+        if (!proyectResponse.ok) {
+          throw new Error(`Error al subir el repositorio: ${proyectResponse.statusText}`);
         }
   
-        const uploadResult = await uploadResponse.json();
-        toast.message(uploadResult.message);
-        formData.append("imageLink", await uploadResult.url);
+        const resProyect = await proyectResponse.json();
+        console.log("resProyect", resProyect);
+  
+        // Manejar la navegación según sea necesario
+        handleNavigation();
+      },
+      {
+        loading: 'Subiendo...',
+        success: '¡Éxito!',
+        error: (error) => `Error al enviar la solicitud: ${error.message}`,
       }
-  
-      // Hacer la solicitud POST a '../api/repos/uploadRepo'
-      const proyectResponse = await fetch("../api/repos/uploadRepo", {
-        method: "POST",
-        body: formData,
-      });
-  
-      if (!proyectResponse.ok) {
-        throw new Error(`Error al subir el repositorio: ${proyectResponse.statusText}`);
-      }
-  
-      const resProyect = await proyectResponse.json();
-      console.log("resProyect", resProyect);
-  
-      // Manejar la navegación según sea necesario
-      handleNavigation();
-    } catch (error) {
-      console.error("Error al enviar la solicitud:", error.message);
-      // Manejar el error según sea necesario
-    }
+    );
   };
   
   return (

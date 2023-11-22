@@ -1,14 +1,15 @@
 import dbConnect from "../../../../config/dbConnect";
+import Repo from "../../../../models/repo";
 import { NextResponse } from "next/server";
-import User from "../../../../models/user";
+
 export async function GET() {
     try {
         await dbConnect()
 
-        const users = await User.find()
-        return NextResponse.json({ users })
+        const repos = await Repo.find().sort({ createdAt: -1 })
 
+        return NextResponse.json({ repos })
     } catch (error) {
-        return NextResponse.json({ mesage: error })
+
     }
 }

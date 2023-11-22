@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Card from "../../components/Card";
 import { Toaster, toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { getUserInfo } from "../../../utils/userCrud";
@@ -11,7 +10,6 @@ import Users from "../../components/users";
 
 function Page() {
   const { data: session } = useSession();
-  const [ bannerVisibility, setBannerVisibility ] = useState(true);
   const [userInfor, setuserInfor] = useState("");
   const [filterBy, setFilterBy] = useState(""); // Estado para almacenar la opción de filtrado seleccionada
   const [searchText, setSearchText] = useState(""); // Estado para el texto de búsqueda
@@ -21,6 +19,28 @@ function Page() {
   const [propertiesFilter, setPropertiesFilter] = useState(""); // Estado para la opción seleccionada en el submenú de Propiedades
   const [mensajeEnviado, setmensajeEnviado] = useState(false);
 
+  const [users, setUsers] = useState(null);
+  console.log(users);
+  const getUsers = async () => {
+    try {
+      const res = await fetch("api/users", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.ok) {
+        const users = await res.json();
+        await setUsers(users);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
   const closeBanner = () => {};
   const handleFilterChange = (event) => {
     const selectedFilter = event.target.value;
@@ -145,67 +165,10 @@ function Page() {
 
   return (
     <div className="min-h-screen p-8 bg-gray-100 dark:bg-gray-950">
-      {!session && bannerVisibility ? (
-        <div
-          id="marketing-banner"
-          tabIndex={-1}
-          className="fixed mt-10 z-50 flex flex-col md:flex-row justify-between w-[calc(100%-2rem)] p-4 -translate-x-1/2 bg-white border border-gray-100 rounded-lg shadow-sm lg:max-w-7xl left-1/2 top-6 dark:bg-gray-700 dark:border-gray-600"
-        >
-          <div className="flex flex-col items-start mb-3 me-4 md:items-center md:flex-row md:mb-0">
-            <a
-              href="/"
-              className="flex items-center mb-2 border-gray-200 md:pe-4 md:me-4 md:border-e md:mb-0 dark:border-gray-600"
-            >
-              <img
-                src="https://flowbite.com/docs/images/logo.svg"
-                className="h-6 me-2"
-                alt="Flowbite Logo"
-              />
-            
-            </a>
-            <p className="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
-              Comparte tus conocimientos! analiza y aprende de millones de
-              proyectos alrededor del mundo
-            </p>
-          </div>
-          <div className="flex items-center flex-shrink-0">
-            <a
-              href="/register"
-              className="px-5 py-2 me-2 text-xs font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Registrate
-            </a>
-            <button
-              onClick={() => setBannerVisibility(!bannerVisibility)}
-              data-dismiss-target="#marketing-banner"
-              type="button"
-              className="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              <svg
-                className="w-3 h-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 14 14"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                />
-              </svg>
-              <span className="sr-only">Close banner</span>
-            </button>
-          </div>
-        </div>
-      ) : ''} 
-
       {/* Sección en la parte superior */}
       <div className="flex items-center justify-between flex-wrap my-0">
         {/*opciones de filtracion*/}
-        <div className=" w-auto">
+        {/* <div className=" w-auto">
           <label className="block text-gray-700 dark:text-white">
             Filtrar por:
           </label>
@@ -221,10 +184,10 @@ function Page() {
             <option value="lenguaje">Lenguaje</option>
             <option value="propiedades">Propiedades</option>
           </select>
-        </div>
+        </div> */}
         {/*---*/}
         {/* Submenú de Propiedades */}
-        {showProperties && (
+        {/* {showProperties && (
           <div className="">
             <label className="block mt-3 text-gray-700 dark:text-white">
               Filtrar por Propiedades:
@@ -239,10 +202,10 @@ function Page() {
               <option value="private">Private</option>
             </select>
           </div>
-        )}
+        )} */}
         {/*---*/}
         {/* Opciones de ordenamiento */}
-        <div className="">
+        {/* <div className="">
           <label className="block mt-3 text-gray-700 dark:text-white">
             Ordenar por:
           </label>
@@ -261,7 +224,7 @@ function Page() {
               Del menos reciente al más reciente
             </option>
           </select>
-        </div>
+        </div> */}
         {/*---*/}
       </div>
       {/*barra de busqueda*/}
@@ -274,34 +237,19 @@ function Page() {
           className="w-full py-2 pl-10 pr-4 rounded-full border border-gray-300 focus:outline-none focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
         />
       </div>
-      {/*---*/}
-      <div className="mb-3 dark:text-white">
-        Repositorios con estrellas:
-        {!session ? (
-          <span className="px-4"> cargando sesion... </span>
-        ) : !userInfor ? (
-          <span className="px-4"> cargando usuario... </span>
-        ) : (
-          <span> {userInfor.stars}</span>
-        )}
+      <h1 className="text-xl dark:text-white font-bold mt-5">Usuarios:</h1>
+      <div className="dark:text-white grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-28">
+        {users && users.users
+          ? users.users.map((user) => (
+              <Users
+                key={user.id || user.email}
+                icon={user.avatar_url}
+                username={user.name}
+                email={user.email}
+              />
+            ))
+          : "cargando usuarios..."}
       </div>
-
-      {/* Grid de tarjetas
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 hover:cursor-pointer">
-        {filteredData.length > 0 ? (
-          filteredData.map((data, index) => (
-            <Card key={index} data={data} handleCardClick={handleCardClick} />
-          ))
-        ) : (
-          <div className={`text-center dark:text-white text-black`}>
-            No se encontraron resultados.
-          </div>
-        )}
-      </div> */}
-
-      <hr />
-
-      <Users />
 
       <Toaster theme="system" richColors />
     </div>
