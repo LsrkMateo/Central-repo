@@ -1,5 +1,5 @@
 import { useState } from "react";
-function proyects() {
+function Proyects() {
   const [repos, setrepos] = useState(null);
   const getRepos = async () => {
     try {
@@ -24,4 +24,4 @@ function proyects() {
   return <div>proyects</div>;
 }
 
-export default proyects;
+export default Proyects;

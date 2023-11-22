@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 
-function page() {
+function Page() {
   const { data: session } = useSession();
   return (
     <div className="min-h-screen p-8 bg-gray-100 dark:bg-gray-950">
@@ -55,4 +55,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
