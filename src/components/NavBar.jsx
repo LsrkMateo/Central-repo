@@ -4,11 +4,32 @@ import getRandomAvatar from "../../utils/getRandomAvatar";
 import { useRouter } from "next/navigation";
 import Avatar from "boring-avatars";
 import { BiUser } from "react-icons/bi";
+import { useContext } from "react";
+import { UserContext } from "../../utils/userContext";
+import { getUserInfo } from "../../utils/userCrud";
+import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { Toaster, toast } from "sonner";
 
 function NavBar({ dark }) {
+  const { userInfo, updateUser } = useContext(UserContext);
   const { data: session } = useSession();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  useEffect(() => {
+    // Llama a la función getUserInfo cuando el componente se monte
+    if (session) {
+      getUserInfo(session.user.email)
+        .then((user) => {
+          // Actualiza el contexto con la información del usuario
+          updateUser(user);
+        })
+        .catch((error) => {
+          console.error("Error al obtener la información del usuario", error);
+        });
+    }
+  }, [session]); // Dependencia de useEffect: se ejecutará cuando la sesión cambie
 
   const toggleUserDropdown = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
@@ -16,7 +37,7 @@ function NavBar({ dark }) {
 
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <div className="flex items-center justify-between p-6">
         <a
           href={session ? "/main" : "/"}
           className="flex items-center space-x-3 rtl:space-x-reverse"
@@ -30,10 +51,10 @@ function NavBar({ dark }) {
             ProyectSharing
           </span>
         </a>
-        <div className="flex flex-col  items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <div className="flex flex-col items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <button
             type="button"
-            className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            className="flex text-sm relative bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
             onClick={toggleUserDropdown}
             id="user-menu-button"
             aria-expanded={isUserDropdownOpen}
@@ -44,9 +65,7 @@ function NavBar({ dark }) {
             {session ? (
               <img
                 className="w-8 h-8 rounded-full"
-                src={`https://robohash.org/${
-                  session && session.user && session.user.name
-                }.png`}
+                src={userInfo?.avatar_url}
                 alt="user photo"
               />
             ) : (
@@ -64,10 +83,10 @@ function NavBar({ dark }) {
               <>
                 <div className="px-4 py-3">
                   <span className="block text-sm text-gray-900 dark:text-white">
-                    {session.user ? session.user.name : "cargando..."}
+                    {userInfo?.name}
                   </span>
                   <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-                    {session.user ? session.user.email : "cargando..."}
+                    {userInfo?.email}
                   </span>
                 </div>
                 <ul className="py-2" aria-labelledby="user-menu-button">
@@ -106,11 +125,10 @@ function NavBar({ dark }) {
                     </li>
                     <hr />
                   </div>
-
                   <li>
                     <a
                       href="/dashboard"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                      className="w-full text-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >
                       Panel de usuario
                     </a>
@@ -118,19 +136,26 @@ function NavBar({ dark }) {
                   <li>
                     <a
                       href="/config"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                      className="w-full text-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >
                       Configuracion
                     </a>
                   </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                    >
-                      Cerrar sesion
-                    </a>
-                  </li>
+                  <button
+                    className="w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                    onClick={() => {
+                      toast("Estas seguro de que quieres cerrar sesion?", {
+                        action: {
+                          label: "confirmar",
+                          onClick: () => {
+                            signOut();
+                          },
+                        },
+                      });
+                    }}
+                  >
+                    cerrar sesion
+                  </button>
                 </ul>
               </>
             ) : (
@@ -165,7 +190,9 @@ function NavBar({ dark }) {
             <li>
               <a
                 href="/main"
-                className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+                className={`${
+                  pathname == "/main" ? "text-blue-700" : "text-white"
+                } block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
                 aria-current="page"
               >
                 Principal
@@ -174,23 +201,29 @@ function NavBar({ dark }) {
             <li>
               <a
                 href="/proyectos"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                className={`${
+                  pathname == "/proyectos" ? "text-blue-700" : "text-white"
+                } block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
               >
                 Proyectos
               </a>
             </li>
             <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            <a
+                href="/blogs"
+                className={`${
+                  pathname == "/blogs" ? "text-blue-700" : "text-white"
+                } block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
               >
                 Blogs
               </a>
             </li>
             <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            <a
+                href="/creators"
+                className={`${
+                  pathname == "/creators" ? "text-blue-700" : "text-white"
+                } block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
               >
                 Explorar creadores
               </a>
@@ -198,6 +231,7 @@ function NavBar({ dark }) {
           </ul>
         </div>
       </div>
+      <Toaster theme="system" richColors />
     </nav>
   );
 }

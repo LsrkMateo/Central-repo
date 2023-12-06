@@ -164,7 +164,7 @@ function Page() {
   }, [session]);
 
   return (
-    <div className="min-h-screen p-8 bg-gray-100 dark:bg-gray-950">
+    <div className="min-h-screen w-full p-8 bg-gray-100 dark:bg-gray-950">
       {/* Sección en la parte superior */}
       <div className="flex items-center justify-between flex-wrap my-0">
         {/*opciones de filtracion*/}

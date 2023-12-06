@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useRef } from "react";
-
+import { useRouter } from "next/navigation";
 function Page() {
   const [showDetails, setShowDetails] = useState(false);
-  const detailsRef = useRef(null);
+  const detailsRef = useRef(null);  
+  const router = useRouter()
 
   const handleLearnMoreClick = async () => {
     await setShowDetails(true);
@@ -18,7 +19,7 @@ function Page() {
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-opacity-60 bg-gray-900">
           <div className="text-center">
             <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">
-              Explora tu potencial, <br /> mejora tus habilidades
+              Explora tu potencial <br /> mejora tus habilidades
             </h1>
             <p className="mb-8 m-4 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">
               ProyectSharing es una red social basada en proyectos, donde podrás
@@ -29,7 +30,7 @@ function Page() {
                 href="/main"
                 className="sm:mx-10 inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
               >
-               Comenzar
+                Explorar
                 <svg
                   className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
                   aria-hidden="true"
@@ -46,6 +47,16 @@ function Page() {
                   />
                 </svg>
               </a>
+              <button
+                onClick={() => {
+                  router.push('/dashboard');
+                }}
+                className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
+              >
+                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                  Empezar a crear
+                </span>
+              </button>
               <button
                 onClick={handleLearnMoreClick}
                 className="sm:mx-10 inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"

@@ -50,6 +50,7 @@ export const authOptions = {
         user instanceof User ? user.stars : session.user.stars;
       return session;
     },
+    
   },
   session: {
     strategy: "jwt",

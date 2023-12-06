@@ -6,9 +6,7 @@ export async function GET(req, { params }) {
   try {
     await connectMongoDB();
     const email = params.email;
-    const user = await User.findOne({ email }).select(
-      "name email stars proyects"
-    );
+    const user = await User.findOne({ email })
 
     if (!user) {
       return NextResponse.json({
